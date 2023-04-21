@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('timeslots', function (Blueprint $table) {
+        Schema::create('subs_perks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('travel_package_id')->constrained('travel_packages');
-            $table->string('date');
-            $table->string('hours_days');
-            $table->integer('slots')->default(0);
+            $table->foreignId('subscription_id')->constrained('subscriptions');
+            $table->foreignId('user_id')->constrained('users');
+            $table->integer('package_counter')->default(0);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('timeslots');
+        Schema::dropIfExists('subs_perks');
     }
 };

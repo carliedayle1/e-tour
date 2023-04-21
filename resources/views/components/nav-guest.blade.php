@@ -1,6 +1,6 @@
 <nav class="bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900 fixed w-full z-20 top-0 left-0 border-b border-gray-200 dark:border-gray-600 z-50">
     <div class="container flex flex-wrap items-center justify-between mx-auto">
-      <a href="https://flowbite.com/" class="flex items-center space-x-4">
+      <a href="/" class="flex items-center space-x-4">
         <x-application-logo-name class="w-10 h-10 fill-current text-gray-500" />
           <span class="self-center text-xl font-semibold whitespace-nowrap dark:text-white">E-TOUR</span>
       </a>

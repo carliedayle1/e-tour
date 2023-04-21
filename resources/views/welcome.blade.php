@@ -39,7 +39,7 @@
                     </div>
                 </section>
             </div>
-            <div>
+            {{-- <div>
                 <section class="bg-white dark:bg-gray-900">
                     <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
                         <div class="max-w-screen-md mb-8 lg:mb-16">
@@ -92,18 +92,18 @@
                         </div>
                     </div>
                   </section>
-            </div>
+            </div> --}}
 
             <div id="default-carousel" class="relative w-full" data-carousel="slide">
                 <!-- Carousel wrapper -->
                 <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
                      <!-- Item 1 -->
+                     @foreach($locations as $location)
                     <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('/images/spot1.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                        <img src="{{ asset('/storage/'.$location) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
                     </div>
-                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                        <img src="{{ asset('/images/spot1.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                    </div>
+                    @endforeach
+                    
                    
                 </div>
                 <!-- Slider indicators -->
@@ -140,17 +140,18 @@
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
                                 @foreach($travel_packages as $travel_package)
                                     <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                                        @if($travel_package->locations->count() > 1)
                                         {{-- Image Carousel --}}
-                                        <div id="default-carousel" class="relative w-full" data-carousel="slide">
+                                        <div id="default-carousel-{{ $travel_package->id }}" class="relative w-full" data-carousel="slide">
                                             <!-- Carousel wrapper -->
                                             <div class="relative h-56 overflow-hidden rounded-lg md:h-100">
                                                     <!-- Item 1 -->
-                                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                                    <img src="{{ asset('/images/spot1.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                                                </div>
-                                                <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                                    <img src="{{ asset('/images/spot1.jpg') }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
-                                                </div>
+                                                @foreach($travel_package->locations as $location)
+                                                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                                                        <img src="{{ asset('/storage/'. $location->image) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{ $location->name }}">
+                                                    </div>
+                                                @endforeach
+                                                
                                                 
                                             </div>
                                             <!-- Slider indicators -->
@@ -172,12 +173,17 @@
                                                 </span>
                                             </button>
                                         </div>
+                                        @else 
+                                          
+                                            <img class="rounded-t-lg" src="{{ asset('/storage/'. $travel_package->locations[0]->image) }}" alt="{{ $travel_package->locations[0]->name }}" />
+                                       
+                                        @endif
                                         
                                         <div class="p-5">
                                             <a href="#">
                                                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{ $travel_package->title }}</h5>
                                             </a>
-                                            <p class="mb-3 min-w-sm font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p>
+                                            <p class="mb-3 min-w-sm font-normal text-gray-700 dark:text-gray-400">{{ $travel_package->description }}</p>
                                             <a href="#" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                                                 Read more
                                                 <svg aria-hidden="true" class="w-4 h-4 ml-2 -mr-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -186,6 +192,9 @@
                                     </div>
 
                                 @endforeach
+                            </div>
+                            <div class="mt-6 p-4">
+                                {{$travel_packages->links()}}
                             </div>
                     @else 
 

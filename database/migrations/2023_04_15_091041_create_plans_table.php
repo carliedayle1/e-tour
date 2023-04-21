@@ -11,12 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('timeslots', function (Blueprint $table) {
+        Schema::create('plans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('travel_package_id')->constrained('travel_packages');
-            $table->string('date');
-            $table->string('hours_days');
-            $table->integer('slots')->default(0);
+            $table->string('plan_id');
+            $table->string('name');
+            $table->string('billing_period');
+            $table->tinyInteger('interval_count')->default(1);
+            $table->string('price');
+            $table->string('currency')->default('usd');
             $table->timestamps();
         });
     }
@@ -26,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('timeslots');
+        Schema::dropIfExists('plans');
     }
 };

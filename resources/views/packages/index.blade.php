@@ -13,6 +13,26 @@
                         <a href="{{ route('package.create') }}" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create Travel Package</a>
                     </div>
 
+
+                    <section class="bg-white dark:bg-gray-900">
+                        <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-12 lg:px-6">
+                            <dl class="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white">
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ $travelPackages->count() }}</dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Travel Packages Created</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Travelers Booked</dd>
+                                </div>
+                                <div class="flex flex-col items-center justify-center">
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ auth()->user()->subsperk->package_counter }}</dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Travel Package Remaining</dd>
+                                </div>
+                            </dl>
+                        </div>
+                      </section>
+
                     @if($travelPackages->count() > 0)
 
                     <div>

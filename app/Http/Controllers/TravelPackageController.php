@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Location;
+use App\Models\SubsPerk;
 use App\Models\Timeslot;
 use Illuminate\Http\Request;
 use App\Models\TravelPackage;
@@ -19,8 +20,15 @@ class TravelPackageController extends Controller
 {
     public function index()
     {
+
+
+
         if(!auth()->user()->type == 'agency') {
             abort(403, 'Unauthorized Action');
+        }
+
+        if(auth()->user()->stripe_id == null){
+            return to_route('subscriptions');
         }
 
         return view('packages.index', [
@@ -28,7 +36,7 @@ class TravelPackageController extends Controller
             where('agency_id', auth()->user()->agency->id)
             ->latest()
             ->filter(request(['search']))
-            ->paginate(6)
+            ->paginate(6),
         ]);
     }
 
@@ -41,8 +49,14 @@ class TravelPackageController extends Controller
 
     public function create()
     {
+
         if(!auth()->user()->type == 'agency') {
             abort(403, 'Unauthorized Action');
+        }
+
+        if(auth()->user()->subsperk->package_counter <= 0){
+            toast('You already used up your travel package instance.','error');
+            return back();
         }
 
         return view('packages.create');
@@ -53,10 +67,16 @@ class TravelPackageController extends Controller
             
         $this->validateTravelPackage($request);
 
+        $featured = false;
+        if(auth()->user()->subscription != 'basic'){
+            $featured = true;
+        }
+
         $travel_package = TravelPackage::create([
             'agency_id' => auth()->user()->agency?->id,
             'title' => $request['title'],
-            'description' => $request['description']
+            'description' => $request['description'],
+            'featured' => $featured
         ]);
 
         // Create and store timeslots
@@ -68,12 +88,16 @@ class TravelPackageController extends Controller
         // Create and store package types
         $this->createPackageTypes($request, $travel_package);
 
+        auth()->user()->subsperk()->update([
+            'package_counter' => auth()->user()->subsperk->package_counter - 1
+        ]);
+
         //Notify admin
-        $admins = User::where('type', 'admin')->get();
-        Notification::send($admins, new NewTravelPackage($travel_package, auth()->user()->agency));
+        // $admins = User::where('type', 'admin')->get();
+        // Notification::send($admins, new NewTravelPackage($travel_package, auth()->user()->agency));
 
         toast('Travel Package created successfully','success');
-        return redirect('/packages');
+        return to_route('package.index');
         
     }
 
@@ -96,18 +120,19 @@ class TravelPackageController extends Controller
             'start_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:start_date',
             'slot' => 'required|numeric|integer|min:1',
-            'from_time' => 'required|date_format:H:i',
-            'to_time' => 'required|date_format:H:i',
+            'hours_days' => 'required',
         ], [
-            'from_time.required' => 'Time from is required.',
-            'to_time.required' => 'Time to is required.',
-            'from_time.date_format' => 'Time from format must be hours:seconds am/pm.',
-            'to_time.date_format' => 'Time from format must be hours:seconds am/pm.',
+            'hours_days.required' => 'Average hours/days is required.',
         ]);
 
         $package->timeslots()->delete();
 
         $this->createTimeslots($request, $package);
+
+        $package->update([
+            'title' => $request['title'],
+            'description' => $request['description'],
+        ]);
 
         toast('Travel Package updated successfully','info');
         return back();
@@ -168,11 +193,10 @@ class TravelPackageController extends Controller
        return $request->validate([
             'title' => 'required|min:3',
             'description' => 'required|min:6',
-            'start_date' => 'required|date|after_or_equal:today',
+            'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'slot' => 'required|numeric|integer|min:1',
-            'from_time' => 'required|date_format:H:i',
-            'to_time' => 'required|date_format:H:i',
+            'hours_days' => 'required',
             'location_name' => 'required',
             'location_name.*' => 'required|min:3',
             'location_description' => 'required',
@@ -186,10 +210,7 @@ class TravelPackageController extends Controller
             'packageType_persons' => 'required',
             'packageType_persons.*' => 'required|numeric|integer|min:1'
         ], [
-            'from_time.required' => 'Time from is required.',
-            'to_time.required' => 'Time to is required.',
-            'from_time.date_format' => 'Time from format must be hours:seconds am/pm.',
-            'to_time.date_format' => 'Time from format must be hours:seconds am/pm.',
+            'hours_days.required' => 'Average hours/days is required.',
             'location_name.*.required' => 'Location name is required.',
             'location_name.*.min' => 'Location name must be at least 3 characters.',
             'location_description.*.required' => 'Location description is required.',
@@ -218,8 +239,7 @@ class TravelPackageController extends Controller
                 'travel_package_id' => 1,
                 'date' => $date->toFormattedDateString(),
                 'slots' => $request['slot'],
-                'from_time' => $request['from_time'],
-                'to_time' => $request['to_time']
+                'hours_days' => $request['hours_days'],
             ]);
         }
 

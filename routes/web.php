@@ -1,12 +1,15 @@
 <?php
 
-use App\Http\Controllers\AgencyController;
-use App\Http\Controllers\LocationController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TravelPackageController;
-use App\Http\Controllers\TravelPackageTypeController;
+use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\SubscriptionsController;
+use App\Http\Controllers\TravelPackageController;
+use App\Http\Controllers\TravelPackageTypeController;
+use App\Models\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,13 +23,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+
     return view('welcome', [
-        'travel_packages' => TravelPackage::where('featured', true)->get()
+        'travel_packages' => TravelPackage::where('featured', true)->where('status', 'active')->latest()->paginate(6),
+        'locations' => Location::all()->pluck('image')
     ]);
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('dashboard', [
+        'travel_packages' => TravelPackage::latest()->paginate(6)
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -35,6 +42,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{user}', [ProfileController::class, 'profile'])->name('profile.display');
     Route::delete('/profile/{user}', [ProfileController::class, 'deleteUser'])->name('delete.user');
     Route::get('/users', [ProfileController::class, 'users'])->name('users');
+
+    // Route::get('/billing-portal', function (Request $request) {
+    //     $request->user()->createOrGetStripeCustomer();
+    //     return $request->user()->redirectToBillingPortal(route('dashboard'));
+    // });
 
     //User
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -67,6 +79,20 @@ Route::middleware('auth')->group(function () {
     Route::post('/packageTypes/store/{package}', [TravelPackageTypeController::class, 'store'])->name('packageType.store');
     Route::delete('/packageTypes/{packageType}', [TravelPackageTypeController::class, 'destroy'])->name('packageType.destroy');
     Route::patch('/packageTypes/{packageType}', [TravelPackageTypeController::class, 'update'])->name('packageType.update');
+
+    //Subscription Plans
+    Route::get('/subscription-plans', [SubscriptionsController::class, 'index'])->name('subscription.plans');
+    Route::post('/single-charge', [SubscriptionsController::class, 'singleCharge'])->name('single.charge');
+    Route::get('/subscription-plans/create', [SubscriptionsController::class, 'create'])->name('subscription.create');
+    Route::post('/subscription-plans/store', [SubscriptionsController::class, 'store'])->name('plan.store');
+    Route::get('/subscriptions', [SubscriptionsController::class, 'display'])->name('subscriptions');
+    Route::get('/subscriptions/{name}', [SubscriptionsController::class, 'subscribe'])->name('subscribe');
+    Route::post('/subscriptions/process', [SubscriptionsController::class, 'process'])->name('subscription.process');
+    Route::get('/subscription/details', [SubscriptionsController::class, 'details'])->name('subscription.details');
+    Route::post('/subscription/cancel/{name}', [SubscriptionsController::class, 'cancel'])->name('subscription.cancel');
+    Route::post('/subscription/resume/{name}', [SubscriptionsController::class, 'resume'])->name('subscription.resume');
+
+    
 });
 
 require __DIR__.'/auth.php';

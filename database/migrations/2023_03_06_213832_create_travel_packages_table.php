@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->longText('description');
             $table->boolean('featured')->default(false);
-            $table->string('status')->default('inactive');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

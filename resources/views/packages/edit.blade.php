@@ -73,31 +73,11 @@
                                         <x-input-error :messages="$errors->get('end_date')" class="mt-1" />
                                     </div>
                                 </div>
-                                <!-- Time Schedule -->
+                                <!-- Average hours/days -->
                                 <div>
-                                    <span class="font-semibold text-lg text-gray-800 dark:text-gray-200 leading-tight">Time Schedule</span>
-                                    <div class="flex space-x-4 mt-2">
-                                        <div>
-                                            <x-input-label for="from_time" :value="__('From')" />
-                                            <x-text-input 
-                                            id="from_time" 
-                                            class="block mt-1 w-full" 
-                                            type="time" 
-                                            name="from_time" 
-                                            :value="old('from_time', $travel_package->timeslots()->orderBy('id', 'desc')->first()->from_time)" />
-                                            <x-input-error :messages="$errors->get('from_time')" class="mt-2" />
-                                        </div>
-                                        <div>
-                                            <x-input-label for="to_time" :value="__('To')" />
-                                            <x-text-input 
-                                            id="to_time" 
-                                            class="block mt-1 w-full" 
-                                            type="time" 
-                                            name="to_time" 
-                                            :value="old('to_time', $travel_package->timeslots()->orderBy('id', 'desc')->first()->to_time)" />
-                                            <x-input-error :messages="$errors->get('to_time')" class="mt-2" />
-                                        </div>
-                                    </div>
+                                    <x-input-label for="hours_days" :value="__('Average Hours or Days')" />
+                                    <x-text-input id="hours_days" class="block mt-1 w-full" type="text" name="hours_days" :value="old('hours_days', $travel_package->timeslots()->latest()->first()->hours_days)" />
+                                    <x-input-error :messages="$errors->get('hours_days')" class="mt-2" />
                                 </div>
                                 <!-- Availability Slot -->
                                 <div>

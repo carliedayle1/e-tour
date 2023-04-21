@@ -4,15 +4,17 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Laravel\Cashier\Billable;
+use Laravel\Cashier\Subscription;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, Billable;
 
     /**
      * The attributes that are mass assignable.
@@ -56,5 +58,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function agency()
     {
        return $this->hasOne(Agency::class);
+    }
+
+    // public function plan()
+    // {
+    //     return $this->plan
+    // }
+
+    public function subsperk()
+    {
+        return $this->hasOne(SubsPerk::class);
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(Subscription::class);
     }
 }
