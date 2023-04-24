@@ -4,24 +4,34 @@ namespace App\Http\Controllers;
 
 require_once('../vendor/autoload.php');
 
-use App\Models\Plan as ModelsPlan;
-use App\Models\SubsPerk;
 use Exception;
 use Stripe\Plan;
 use \Stripe\Stripe;
+use App\Models\User;
+use App\Models\SubsPerk;
 use Illuminate\Http\Request;
 use Laravel\Cashier\Cashier;
-use Illuminate\Support\Facades\Auth;
+use App\Models\TravelPackage;
 use Laravel\Cashier\Subscription;
+use App\Models\Plan as ModelsPlan;
+use Illuminate\Support\Facades\Auth;
 
 class SubscriptionsController extends Controller
 {
 
     public function index()
     {
+
+        $subscriptions = Subscription::count();
+        $packages = TravelPackage::count();
+        $users = User::where('stripe_id', '!=', null)->count();
+
         return view('subscriptions.index', [
             'intent' => auth()->user()->createSetupIntent(),
-            'plans' => ModelsPlan::all()
+            'plans' => ModelsPlan::all(),
+            'subscriptions_count' => $subscriptions,
+            'packages_count' => $packages,
+            'users_count' => $users
         ]);
     }
 

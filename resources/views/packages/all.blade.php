@@ -44,9 +44,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Status
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    {{-- <th scope="col" class="px-6 py-3">
                                         <span class="sr-only">Edit</span>
-                                    </th>
+                                    </th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -79,11 +79,11 @@
                                             <span class="bg-green-100 text-green-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">{{ strtoupper($travelPackage->status) }}</span>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-4 text-right ">
+                                    {{-- <td class="px-6 py-4 text-right ">
                                         <div class="flex justify-center space-x-4">
                                             <a href="/packages/{{ $travelPackage->id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
 
                                 @endforeach

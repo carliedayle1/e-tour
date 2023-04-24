@@ -56,16 +56,16 @@
                         <div class="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6">
                             <dl class="grid max-w-screen-md gap-8 mx-auto text-gray-900 sm:grid-cols-3 dark:text-white">
                                 <div class="flex flex-col items-center justify-center">
-                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">73M+</dt>
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ $subscriptions_count }}</dt>
                                     <dd class="font-light text-gray-500 dark:text-gray-400">Active Subscriptions</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
-                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ $packages_count }}</dt>
                                     <dd class="font-light text-gray-500 dark:text-gray-400">Travel Packages Created</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
-                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">4M+</dt>
-                                    <dd class="font-light text-gray-500 dark:text-gray-400">Users</dd>
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ $users_count }}</dt>
+                                    <dd class="font-light text-gray-500 dark:text-gray-400">Subscribed Users</dd>
                                 </div>
                             </dl>
                         </div>
@@ -87,9 +87,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Price
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    {{-- <th scope="col" class="px-6 py-3">
                                         Action
-                                    </th>
+                                    </th> --}}
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,9 +107,9 @@
                                     <td class="px-6 py-4">
                                         ₱{{ ($plan->price/100) }}
                                     </td>
-                                    <td class="px-6 py-4">
+                                    {{-- <td class="px-6 py-4">
                                         <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                                 @endforeach
                             </tbody>
