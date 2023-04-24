@@ -55,4 +55,14 @@ class TravelPackage extends Model
     {
         return $this->hasMany(TravelPackageType::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+    public function feedbacks()
+    {
+        return $this->hasMany(Feedback::class);
+    }
 }

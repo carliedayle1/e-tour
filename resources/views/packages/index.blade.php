@@ -22,7 +22,7 @@
                                     <dd class="font-light text-gray-500 dark:text-gray-400">Travel Packages Created</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">
-                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">1B+</dt>
+                                    <dt class="mb-2 text-3xl md:text-4xl font-extrabold">{{ auth()->user()->agency->bookings->count() }}</dt>
                                     <dd class="font-light text-gray-500 dark:text-gray-400">Travelers Booked</dd>
                                 </div>
                                 <div class="flex flex-col items-center justify-center">

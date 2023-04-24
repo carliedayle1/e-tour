@@ -106,4 +106,13 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function deleteNotifications()
+    {
+        auth()->user()->notifications()->delete();
+
+        toast('Notifications deleted successfully','warning');
+
+        return back();
+    }
+
 }

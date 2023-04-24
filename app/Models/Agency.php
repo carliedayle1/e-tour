@@ -20,4 +20,9 @@ class Agency extends Model
     {
         return $this->hasMany(TravelPackage::class);
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

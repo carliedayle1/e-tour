@@ -14,15 +14,25 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Browse Travel Packages') }}
                     </x-nav-link>
-                    @if(auth()->user()->type == 'agency')
+                    @endauth
+                    @if(auth()->user()?->type == 'traveler')
+                    <x-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
+                        {{ __('Travel Plan and Bookings') }}
+                    </x-nav-link>
+                    @endif
+                    @if( auth()->user()?->type == 'agency')
                         <x-nav-link :href="route('package.index')" :active="request()->routeIs('package.index')">
                             {{ __('Travel Packages') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
+                            {{ __('Bookings') }}
+                        </x-nav-link>
                     @endif
-                    @if(auth()->user()->type == 'admin')
+                    @if(auth()->user()?->type == 'admin')
                         <x-nav-link :href="route('package.all')" :active="request()->routeIs('package.all')">
                             {{ __('Check Travel Packages') }}
                         </x-nav-link>
@@ -62,7 +72,7 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        @if(auth()->user()->type == 'agency' && auth()->user()->stripe_id != null)
+                        @if(auth()->user()?->type == 'agency' && auth()->user()?->stripe_id != null)
                         <x-dropdown-link :href="route('subscription.details')">
                             {{ __('Billing') }}
                         </x-dropdown-link>
@@ -96,7 +106,7 @@
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-                @if(auth()->user()->unreadNotifications->count() > 0)
+                @if(auth()->user()?->unreadNotifications->count() > 0)
                     <div>
                         <span class="bg-pink-100 text-pink-800 text-xs font-medium ml-2 mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{ auth()->user()->unreadNotifications->count() }}</span>
                     </div>
@@ -108,15 +118,25 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
+            @auth
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Browse Travel Packages') }}
             </x-responsive-nav-link>
-            @if(auth()->user()->type == 'agency')
+            @endauth
+            @if(auth()->user()?->type == 'traveler')
+            <x-responsive-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
+                {{ __('Travel Plan and Bookings') }}
+            </x-responsive-nav-link>
+            @endif
+            @if(auth()->user()?->type == 'agency')
                 <x-responsive-nav-link :href="route('package.index')" :active="request()->routeIs('package.index')">
                     {{ __('Travel Packages') }}
                 </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
+                    {{ __('Bookings') }}
+                </x-responsive-nav-link>
             @endif
-            @if(auth()->user()->type == 'admin')
+            @if(auth()->user()?->type == 'admin')
                 <x-responsive-nav-link :href="route('package.all')" :active="request()->routeIs('package.all')">
                     {{ __('Check Travel Packages') }}
                 </x-responsive-nav-link>
@@ -142,8 +162,8 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('notifications')">
                     {{ __('Notifications') }}
-                    @if(auth()->user()->unreadNotifications->count() > 0)
-                    <span class="bg-pink-100 text-pink-800 text-xs font-medium ml-2 mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{ auth()->user()->unreadNotifications->count() }}</span>
+                    @if(auth()->user()?->unreadNotifications?->count() > 0)
+                    <span class="bg-pink-100 text-pink-800 text-xs font-medium ml-2 mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{ auth()->user()?->unreadNotifications->count() }}</span>
                     @endif
                 </x-responsive-nav-link>
 

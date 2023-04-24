@@ -4,24 +4,25 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Booking;
 use App\Models\Location;
 use App\Models\SubsPerk;
 use App\Models\Timeslot;
 use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use App\Models\TravelPackageType;
+use App\Notifications\CancelBooking;
+use App\Notifications\NewBooking;
 use Illuminate\Validation\Rules\File;
 use App\Notifications\NewTravelPackage;
-use App\Notifications\VerifiedTravelPackage;
 use Illuminate\Support\Facades\Storage;
+use App\Notifications\VerifiedTravelPackage;
 use Illuminate\Support\Facades\Notification;
 
 class TravelPackageController extends Controller
 {
     public function index()
     {
-
-
 
         if(!auth()->user()->type == 'agency') {
             abort(403, 'Unauthorized Action');
@@ -64,19 +65,24 @@ class TravelPackageController extends Controller
 
     public function store(Request $request)
     {
-            
         $this->validateTravelPackage($request);
 
         $featured = false;
+        $blog = false;
         if(auth()->user()->subscription != 'basic'){
             $featured = true;
+        }
+
+        if(auth()->user()->subscription == 'premium'){
+            $blog = true;
         }
 
         $travel_package = TravelPackage::create([
             'agency_id' => auth()->user()->agency?->id,
             'title' => $request['title'],
             'description' => $request['description'],
-            'featured' => $featured
+            'featured' => $featured,
+            'blog' => $blog
         ]);
 
         // Create and store timeslots
@@ -150,6 +156,7 @@ class TravelPackageController extends Controller
         $package->locations()->delete();
         $package->timeslots()->delete();
         $package->packageTypes()->delete();
+        $package->bookings()->delete();
         $package->delete();
 
         toast('Travel Package deleted successfully','warning');
@@ -277,6 +284,100 @@ class TravelPackageController extends Controller
         }
 
         $travel_package->packageTypes()->saveMany($packageTypes);
+    }
+
+    public function travelerView(TravelPackage $package)
+    {
+
+        return view('packages.travelerView', [
+            'travel_package' => $package
+        ]);
+    }
+
+    public function authTravelerView(TravelPackage $package)
+    {
+
+        $booking = Booking::where('travel_package_id', $package->id)->where('user_id', auth()->user()->id)->first();
+
+        $timeslots = $package->timeslots->filter(function ($timeslot){
+            if(Carbon::parse($timeslot->date)->gt(Carbon::now())){
+                return $timeslot;
+            }
+        });
+        return view('packages.authTravelerView', [
+            'travel_package' => $package, 
+            'timeslots' => $timeslots,
+            'booking' => $booking
+        ]);
+    }
+
+    public function bookPackage(Request $request)
+    {
+
+        $request->validate([
+            'date' => 'required',
+            'packageType' => 'required',
+            'message' => 'nullable'
+        ]);
+
+        $timeslot = Timeslot::findOrFail($request->date);
+        $packageType = TravelPackageType::findOrFail($request->packageType);
+
+
+        if($timeslot->slots <= 0){
+            toast('Slots for the date you chose is now booked or full.','info');
+            return back()->withErrors(['date' => ['Slots for this day is now booked or full.']]);
+        }
+
+        $timeslot->update([
+            'slots' => intval($timeslot->slots) - 1
+        ]);
+
+        $booking = Booking::create([
+            'user_id' => auth()->user()->id,
+            'agency_id' => $packageType->travelPackage->agency->id,
+            'travel_package_id' => $packageType->travelPackage->id,
+            'travel_package_type_id' => $packageType->id,
+            'timeslot_id' => $timeslot->id,
+            'message' => $request->message
+        ]);
+
+        //Notify agency
+        $agency = User::where('id', $packageType->travelPackage->agency->user->id)->get();
+        Notification::send($agency, new NewBooking($booking));
+
+        toast('Booking reserved!','success');
+        return to_route('travel.plan');
+    }
+
+    public function travelPlan()
+    {
+        return view('travelPlan.index', [
+            'bookings' => auth()->user()->bookings
+        ]);
+    }
+
+    public function cancelBooking(Booking $booking)
+    {
+
+        $booking->timeslot->update([
+            'slots' => intval($booking->timeslot->slots) - 1
+        ]);
+
+        //Notify agency
+        $agency = User::where('id', $booking->agency->user->id)->get();
+        Notification::send($agency, new CancelBooking($booking));
+
+        $booking->delete();
+        toast('Booking canceled!','warning');
+        return to_route('travel.plan');
+    }
+
+    public function bookings()
+    {
+        return view('travelPlan.bookings', [
+            'bookings' => auth()->user()->agency->bookings
+        ]);
     }
 
 }

@@ -1,15 +1,16 @@
 <?php
 
+use App\Models\Location;
 use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\TravelPackageTypeController;
-use App\Models\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +26,14 @@ use App\Models\Location;
 Route::get('/', function () {
 
     return view('welcome', [
-        'travel_packages' => TravelPackage::where('featured', true)->where('status', 'active')->latest()->paginate(6),
+        'travel_packages' => TravelPackage::where('status', 'active')->latest()->filter(request(['search']))->paginate(6),
         'locations' => Location::all()->pluck('image')
     ]);
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'travel_packages' => TravelPackage::latest()->paginate(6)
+        'travel_packages' => TravelPackage::where('status', 'active')->latest()->filter(request(['search']))->paginate(6)
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -69,6 +70,17 @@ Route::middleware('auth')->group(function () {
     Route::patch('/packages/{package}', [TravelPackageController::class, 'update'])->name('package.update');
     Route::delete('/packages/{package}', [TravelPackageController::class, 'delete'])->name('package.delete');
     Route::patch('/packages/check/{package}', [TravelPackageController::class, 'status'])->name('package.status');
+    Route::get('/travel-packages/view/{package}', [TravelPackageController::class, 'authTravelerView'])->name('package.authTravelerView');
+    Route::post('/packages/book', [TravelPackageController::class, 'bookPackage'])->name('package.book');
+    Route::get('/travel-plan', [TravelPackageController::class, 'travelPlan'])->name('travel.plan');
+
+    //Bookings
+    Route::post('/booking/cancel/{booking}', [TravelPackageController::class, 'cancelBooking'])->name('cancel.booking');
+    Route::get('/bookings', [TravelPackageController::class, 'bookings'])->name('bookings');
+    Route::post('/bookings/confirm/{booking}', [BookingController::class, 'confirmBooking'])->name('confirm.booking');
+
+    //Feedbacks
+    Route::post('/bookings/feedback', [BookingController::class, 'storeFeedback'])->name('store.feedback');
 
     //Location 
     Route::post('/locations/store/{package}', [LocationController::class, 'store'])->name('location.store');
@@ -92,6 +104,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/subscription/cancel/{name}', [SubscriptionsController::class, 'cancel'])->name('subscription.cancel');
     Route::post('/subscription/resume/{name}', [SubscriptionsController::class, 'resume'])->name('subscription.resume');
 
+
     
 });
 
@@ -100,4 +113,7 @@ require __DIR__.'/auth.php';
 Route::middleware('guest')->group(function () {
     Route::get('/agency', [AgencyController::class, 'create'])->name('agency.create');
     Route::post('/agency', [AgencyController::class, 'store'])->name('agency.store');
+
+    //Traveler Routes
+    Route::get('/travel-packages/{package}', [TravelPackageController::class, 'travelerView'])->name('package.travelerView');
 });
