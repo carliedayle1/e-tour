@@ -66,6 +66,7 @@
                                             ₱{{ $booking->travelPackageType->fee }}
                                         </td>
                                         <td class="px-6 py-4">
+                                            @if(!$booking->reviewed)
                                             <button type="button" 
                                             x-data=""
                                             x-on:click.prevent="$dispatch('open-modal', 'cancel-booking-{{ $booking->id }}')"
@@ -91,6 +92,7 @@
                                                     </div>
                                                 </form>
                                             </x-modal>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach

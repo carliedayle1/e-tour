@@ -24,6 +24,9 @@ class TravelPackageController extends Controller
     public function index()
     {
 
+        $values = auth()->user()->agency->bookings->map(function ($data){
+            return $data->travelPackageType->fee;
+        });
         if(!auth()->user()->type == 'agency') {
             abort(403, 'Unauthorized Action');
         }
@@ -38,6 +41,7 @@ class TravelPackageController extends Controller
             ->latest()
             ->filter(request(['search']))
             ->paginate(6),
+            'total_earnings' => $values->sum()
         ]);
     }
 
@@ -289,8 +293,10 @@ class TravelPackageController extends Controller
     public function travelerView(TravelPackage $package)
     {
 
+       
         return view('packages.travelerView', [
-            'travel_package' => $package
+            'travel_package' => $package,
+            'booking' => null
         ]);
     }
 

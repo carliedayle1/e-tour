@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>E-Tour</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -153,6 +153,159 @@
                     </div>
                 </div>
               </section>
+
+              @if($travel_package->feedbacks->count() > 0)
+              <div class="">
+                  <section class="bg-white dark:bg-gray-900 py-8 lg:py-16">
+                      <div class="max-w-2xl mx-auto px-4">
+                          <div class="flex space-x-4 content-center">
+
+                              <div class="flex justify-between items-center">
+                                <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Feedback</h2>
+                              </div>
+                       
+                              <div class="flex items-center">
+                                  @for($i = 1; $i <= 5; $i++)
+                                      @if($i <= intval($travel_package->feedbacks->avg('stars')))
+                                      <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                      @else 
+                                      <svg aria-hidden="true" class="w-5 h-5 text-gray-300 dark:text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>Fifth star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                                      @endif
+                                  @endfor
+                                  
+                                  
+                                  <p class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">{{ $travel_package->feedbacks->avg('stars') }} out of 5</p>
+                                  <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
+                                  <a href="#" class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-white">{{ $travel_package->feedbacks->count() }} reviews</a>
+                              </div>
+
+                          </div>
+                          @if($booking != null && $booking?->user?->id == auth()->user()->id && $booking?->reviewed == false)
+                          <form class="mb-6" action="/bookings/feedback" method="POST">
+                              @csrf
+                              <input type="hidden" value="{{ $travel_package->id }}" name="travel_package_id" >
+                              <input type="hidden" value="{{ $booking->id }}" name="booking_id" >
+                              <div class="my-6">
+
+                                  <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Please select a rating</label>
+                                  <select id="countries" name="stars" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                    <option value="1">1 Star</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="5">5 Stars</option>
+                                  </select>
+                                  
+
+                              </div>
+                              
+                                <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                                    <label for="comment" class="sr-only">Your comment</label>
+                                    <textarea id="comment" rows="6" name="message"
+                                        class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                        placeholder="Write a comment..." required></textarea>
+                                </div>
+                                <button type="submit"
+                                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                                    Post feedback
+                                </button>
+                          </form>
+                          @endif
+                      @foreach($travel_package->feedbacks as $feedback)
+                          <article class="p-6 mb-6 text-base bg-white rounded-lg dark:bg-gray-900">
+                              <footer class="flex justify-between items-center mb-2">
+                                  <div class="flex items-center">
+                                      <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">{{ $feedback->user->name }}</p>
+                                      <p class="text-sm text-gray-600 dark:text-gray-400">{{ $feedback->created_at->diffForHumans() }}</p>
+                                  </div>
+                                  @if($feedback->user->id == auth()?->user()?->id)
+                                  <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
+                                      class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                                      type="button">
+                                      <svg class="w-5 h-5" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                          xmlns="http://www.w3.org/2000/svg">
+                                          <path
+                                              d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z">
+                                          </path>
+                                      </svg>
+                                      <span class="sr-only">Comment settings</span>
+                                  </button>
+                                 
+                                  <!-- Dropdown menu -->
+                                  <div id="dropdownComment1"
+                                      class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">
+                                      <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                          aria-labelledby="dropdownMenuIconHorizontalButton">
+                                          <li>
+                                              <a href="#"
+                                                  class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                          </li>
+                                         
+                                      </ul>
+                                  </div>
+                                  @endif
+                              </footer>
+                              <p class="text-gray-500 dark:text-gray-400">{{ $feedback->message }}</p>
+                              
+                          </article>
+                      @endforeach
+                      </div>
+                    </section>
+              </div>                          
+              @else 
+              <div class="my-8">
+                  <section class="bg-white dark:bg-gray-900 py-8 lg:py-16">
+                      <div class="max-w-2xl mx-auto px-4">
+                          <div class="flex flex-col space-x-4 space-y-4 content-center">
+
+                              <div class="flex justify-between items-center">
+                                <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Feedback</h2>
+                              </div>
+                              @if($booking?->user?->id == auth()->user()->id && $booking?->reviewed == false)
+                              <form class="mb-6" action="/bookings/feedback" method="POST">
+                                  @csrf
+                                  <input type="hidden" value="{{ $travel_package->id }}" name="travel_package_id" >
+                                  <input type="hidden" value="{{ $booking->id }}" name="booking_id" >
+                                  <div class="my-6">
+
+                                      <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Please select a rating</label>
+                                      <select id="countries" name="stars" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="1">1 Star</option>
+                                        <option value="2">2 Stars</option>
+                                        <option value="3">3 Stars</option>
+                                        <option value="4">4 Stars</option>
+                                        <option value="5">5 Stars</option>
+                                      </select>
+                                      
+
+                                  </div>
+                                  
+                                    <div class="py-2 px-4 mb-4 bg-white rounded-lg rounded-t-lg border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+                                        <label for="comment" class="sr-only">Your comment</label>
+                                        <textarea id="comment" rows="6" name="message"
+                                            class="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
+                                            placeholder="Write a comment..." required></textarea>
+                                    </div>
+                                    <button type="submit"
+                                        class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-primary-700 rounded-lg focus:ring-4 focus:ring-primary-200 dark:focus:ring-primary-900 hover:bg-primary-800">
+                                        Post feedback
+                                    </button>
+                              </form>
+                              @endif
+                              
+                              <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                                  <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">No posted feedbacks at the moment..</h5>
+                                  
+                              </div>
+                                
+                            
+                          </div>
+                      
+                      </div>
+                    </section>
+              </div>
+              
+              @endif
 
 
            
