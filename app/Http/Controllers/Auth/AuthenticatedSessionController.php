@@ -32,8 +32,8 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
         if(auth()->user()->type == 'agency' && auth()->user()->stripe_id != null && auth()->user()->subscription->ends_at == null){
-            //to do
-            $date = Carbon::parse(auth()->user()->subscription->created_at)->addMonth()->toDateString();
+            $addMonths = Carbon::parse(auth()->user()->subscription->created_at)->diffInMonths(Carbon::today());
+            $date = Carbon::parse(auth()->user()->subscription->created_at)->addMonths($addMonths)->toDateString();
             if(Carbon::parse($date)->diffInDays(Carbon::today()) == 0){
                 $package_counter = 0;
                 if(auth()->user()->subscription->name == 'basic'){
