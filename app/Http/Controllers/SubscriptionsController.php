@@ -170,7 +170,7 @@ class SubscriptionsController extends Controller
     public function cancel($name)
     {
         $user = auth()->user();
-        $user->subscription($name)->cancel();
+        $user->subscription->cancel();
 
         toast('Subscription cancelled','warning');
         return back();
@@ -179,7 +179,7 @@ class SubscriptionsController extends Controller
     public function resume($name)   
     {
         $user = auth()->user();
-        $user->subscription($name)->resume();
+        $user->subscription->resume();
 
         toast('Subscription resume','success');
         return back();

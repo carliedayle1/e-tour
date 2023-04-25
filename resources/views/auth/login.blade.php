@@ -1,10 +1,7 @@
 <x-guest-layout>
-    <div>
-        <div class="text-center text-gray-700 dark:text-gray-300">
-            Not registered yet?
-            <span class="hover:text-blue-100"><a href="/register">Register here!</a></span>
-            <br> Or do you want to join as a travel agency and earn?
-            <span class="hover:text-blue-100"><a href="{{ route('agency.create') }}">Click here!</a></span>
+    <div class="mt-6 mb-3">
+        <div class="text-center text-gray-700 dark:text-gray-300 text-3xl">
+           Login
         </div>
         
     </div>
@@ -40,6 +37,7 @@
                 <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ __('Remember me') }}</span>
             </label>
         </div>
+        
 
         <div class="flex items-center justify-end mt-4">
             @if (Route::has('password.request'))
@@ -51,6 +49,16 @@
             <x-primary-button class="ml-3">
                 {{ __('Log in') }}
             </x-primary-button>
+        </div>
+
+        <div class="mt-6">
+            <div class="text-center text-gray-700 dark:text-gray-300">
+                Not registered yet?
+                <span class="hover:text-blue-100"><a href="/register">Register here!</a></span>
+                <br> Or do you want to join as a travel agency and earn?
+                <span class="hover:text-blue-100"><a href="{{ route('agency.create') }}">Click here!</a></span>
+            </div>
+            
         </div>
     </form>
 </x-guest-layout>

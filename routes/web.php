@@ -73,6 +73,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/travel-packages/view/{package}', [TravelPackageController::class, 'authTravelerView'])->name('package.authTravelerView');
     Route::post('/packages/book', [TravelPackageController::class, 'bookPackage'])->name('package.book');
     Route::get('/travel-plan', [TravelPackageController::class, 'travelPlan'])->name('travel.plan');
+    Route::get('/travel-packages/compare', [TravelPackageController::class, 'compare'])->name('package.compare');
+    // Route::post('//travel-packages/compare', [TravelPackageController::class, 'compare2'])->name('package.compare2');
+
 
     //Bookings
     Route::post('/booking/cancel/{booking}', [TravelPackageController::class, 'cancelBooking'])->name('cancel.booking');
@@ -116,4 +119,5 @@ Route::middleware('guest')->group(function () {
 
     //Traveler Routes
     Route::get('/travel-packages/{package}', [TravelPackageController::class, 'travelerView'])->name('package.travelerView');
+    Route::get('/travel-packages/compare/view', [TravelPackageController::class, 'compareView'])->name('package.compareView');
 });

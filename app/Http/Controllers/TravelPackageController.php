@@ -25,8 +25,11 @@ class TravelPackageController extends Controller
     {
 
         $values = auth()->user()->agency->bookings->map(function ($data){
-            return $data->travelPackageType->fee;
+            if($data->status == 'confirmed'){
+                return $data->travelPackageType->fee;
+            }
         });
+
         if(!auth()->user()->type == 'agency') {
             abort(403, 'Unauthorized Action');
         }
@@ -205,7 +208,7 @@ class TravelPackageController extends Controller
             'title' => 'required|min:3',
             'description' => 'required|min:6',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
+            'end_date' => 'required|date|after_or_equal:today',
             'slot' => 'required|numeric|integer|min:1',
             'hours_days' => 'required',
             'location_name' => 'required',
@@ -358,8 +361,9 @@ class TravelPackageController extends Controller
 
     public function travelPlan()
     {
+        $bookings = Booking::where('user_id', auth()->user()->id)->latest()->get();
         return view('travelPlan.index', [
-            'bookings' => auth()->user()->bookings
+            'bookings' => $bookings
         ]);
     }
 
@@ -381,9 +385,70 @@ class TravelPackageController extends Controller
 
     public function bookings()
     {
+        $bookings = Booking::where('agency_id', auth()->user()->agency->id)->latest()->get();
         return view('travelPlan.bookings', [
-            'bookings' => auth()->user()->agency->bookings
+            'bookings' => $bookings
         ]);
     }
+
+    public function compare(Request $request)
+    {
+
+        $package_1 = null;
+        if(isset($request->package1)){
+            $package_1 = TravelPackage::where('id', $request->package1)->get()->first();
+        }
+
+        $package_2 = null;
+        if(isset($request->package2)){
+            $package_2 = TravelPackage::where('id', $request->package2)->get()->first();
+        }
+
+
+        return view('packages.compare', [
+            'travel_packages' => TravelPackage::all(),
+            'package_1' => $package_1,
+            'package_2' => $package_2
+        ]);
+    }
+
+    public function compareView(Request $request)
+    {
+        $package_1 = null;
+        if(isset($request->package1)){
+            $package_1 = TravelPackage::where('id', $request->package1)->get()->first();
+        }
+
+        $package_2 = null;
+        if(isset($request->package2)){
+            $package_2 = TravelPackage::where('id', $request->package2)->get()->first();
+        }
+
+
+        return view('packages.compareView', [
+            'travel_packages' => TravelPackage::all(),
+            'package_1' => $package_1,
+            'package_2' => $package_2
+        ]);
+    }
+
+    // public function compare2(Request $request)
+    // {
+
+    //     if($request->package1 == $request->package2){
+    //         return back()->withErrors(['same' => 'Package 1 must not be the same with Package 2']);
+    //     }
+
+    //     $request->validate([
+    //         'package1' => 'required',
+    //         'package2' => 'required'
+    //     ]);
+
+    //     $package_1 = TravelPackage::where('id', $request->package1)->get()->first();
+    //     $package_2 = TravelPackage::where('id', $request->package2)->get()->first();
+
+    //     return back();
+
+    // }
 
 }

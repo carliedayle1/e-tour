@@ -136,13 +136,15 @@
                             </div>
 
                             <div class="flex items-center space-x-4 mt-8">
-                
+                                
+                                @if(auth()->user()->type == 'traveler')
                                 <button type="button"
                                 x-data=""
                                 x-on:click.prevent="$dispatch('open-modal', 'book-travel-package')"
                                 class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
                                     Book Now
-                                </button>   
+                                </button>  
+                                @endif 
                                
                
                                 <x-modal name="book-travel-package" :show="$errors->isNotEmpty()" focusable>
@@ -255,6 +257,7 @@
                                                     <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">{{ $feedback->user->name }}</p>
                                                     <p class="text-sm text-gray-600 dark:text-gray-400">{{ $feedback->created_at->diffForHumans() }}</p>
                                                 </div>
+                                                @if($feedback->user->id == auth()->user()->id)
                                                 <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
                                                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                                     type="button">
@@ -266,7 +269,7 @@
                                                     </svg>
                                                     <span class="sr-only">Comment settings</span>
                                                 </button>
-                                                @if($feedback->user->id == auth()->user()->id)
+                                               
                                                 <!-- Dropdown menu -->
                                                 <div id="dropdownComment1"
                                                     class="hidden z-10 w-36 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600">

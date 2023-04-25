@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\SubsPerk;
 use App\Providers\RouteServiceProvider;
+use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,6 +30,26 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+
+        if(auth()->user()->type == 'agency' && auth()->user()->stripe_id != null && auth()->user()->subscription->ends_at == null){
+            //to do
+            $date = Carbon::parse(auth()->user()->subscription->created_at)->addMonth()->toDateString();
+            if(Carbon::parse($date)->diffInDays(Carbon::today()) == 0){
+                $package_counter = 0;
+                if(auth()->user()->subscription->name == 'basic'){
+                    $package_counter = 5;
+                } else if(auth()->user()->subscription->name == 'plus'){
+                    $package_counter = 10;
+                } else {
+                    $package_counter = 30;
+                }
+
+                auth()->user()->subsperk->update([
+                    'package_counter' => $package_counter
+                ]);
+            }
+            
+        }
 
         return redirect()->intended(RouteServiceProvider::HOME);
     }

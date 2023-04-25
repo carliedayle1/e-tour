@@ -18,6 +18,9 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Browse Travel Packages') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                        {{ __('Compare Travel Packages') }}
+                    </x-nav-link>
                     @endauth
                     @if(auth()->user()?->type == 'traveler')
                     <x-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
@@ -121,6 +124,9 @@
             @auth
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Browse Travel Packages') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                {{ __('Compare Travel Packages') }}
             </x-responsive-nav-link>
             @endauth
             @if(auth()->user()?->type == 'traveler')

@@ -24,14 +24,17 @@
                         <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
                             @if($travel_package->locations->count() > 1)
                             {{-- Image Carousel --}}
-                            <div id="default-carousel-{{ $travel_package->id }}" class="relative w-full" data-carousel="slide">
+                            <div id="default-carousel" class="relative w-full" data-carousel="slide">
                                 <!-- Carousel wrapper -->
                                 <div class="relative h-56 overflow-hidden rounded-lg md:h-100">
                                         <!-- Item 1 -->
                                     @foreach($travel_package->locations as $location)
+                                    
+                                        @if($location->image != null)
                                         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-                                            <img src="{{ asset('/storage/'. $location->image) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{ $location->name }}">
+                                            <img src="{{ asset("/storage/". $location->image) }}" class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="{{ $location->name }}">
                                         </div>
+                                        @endif
                                     @endforeach
                                     
                                     
