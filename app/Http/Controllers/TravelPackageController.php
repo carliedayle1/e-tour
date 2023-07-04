@@ -24,6 +24,10 @@ class TravelPackageController extends Controller
     public function index()
     {
 
+        if(!auth()->user()->type == 'admin') {
+            abort(403, 'Unauthorized Action');
+        }
+        
         $values = auth()->user()->agency->bookings->map(function ($data){
             if($data->status == 'confirmed'){
                 return $data->travelPackageType->fee;

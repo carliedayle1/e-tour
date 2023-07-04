@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyController;
+use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocationController;
@@ -107,7 +108,15 @@ Route::middleware('auth')->group(function () {
     Route::post('/subscription/cancel/{name}', [SubscriptionsController::class, 'cancel'])->name('subscription.cancel');
     Route::post('/subscription/resume/{name}', [SubscriptionsController::class, 'resume'])->name('subscription.resume');
 
-
+    // Attractions
+    Route::get('/admin/attractions', [AttractionController::class, 'index'])->name('admin.attractions');
+    Route::get('/admin/attractions/create', [AttractionController::class, 'create'])->name('create.attractions');
+    Route::post('/attractions/store', [AttractionController::class, 'store'])->name('attractions.store');
+    Route::get('/attractions/{attraction}', [AttractionController::class, 'show'])->name('attraction.show');
+    Route::get('/attractions/edit/{attraction}', [AttractionController::class, 'edit'])->name('attraction.edit');
+    Route::patch('/attractions/update/{attraction}', [AttractionController::class, 'update'])->name('attraction.update');
+    Route::delete('/attractions/{attraction}', [AttractionController::class, 'delete'])->name('attraction.delete');
+    
     
 });
 
@@ -120,4 +129,5 @@ Route::middleware('guest')->group(function () {
     //Traveler Routes
     Route::get('/travel-packages/{package}', [TravelPackageController::class, 'travelerView'])->name('package.travelerView');
     Route::get('/travel-packages/compare/view', [TravelPackageController::class, 'compareView'])->name('package.compareView');
+    
 });

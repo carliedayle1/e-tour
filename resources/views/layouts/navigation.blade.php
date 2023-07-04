@@ -45,6 +45,9 @@
                         <x-nav-link :href="route('subscription.plans')" :active="request()->routeIs('subscription.plans')">
                             {{ __('Subscription Plans') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('admin.attractions')" :active="request()->routeIs('admin.attractions')">
+                            {{ __('Attractions') }}
+                        </x-nav-link>
                     @endif
                 </div>
                
@@ -148,6 +151,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('package.all')" :active="request()->routeIs('package.all')">
                     {{ __('Users') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.attractions')" :active="request()->routeIs('admin.attractions')">
+                    {{ __('Attractions') }}
                 </x-responsive-nav-link>
             @endif
             

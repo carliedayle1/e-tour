@@ -1,4 +1,5 @@
 import "./bootstrap";
+import "./ph-address-selector";
 import Alpine from "alpinejs";
 import "flowbite";
 import "flowbite-datepicker";
