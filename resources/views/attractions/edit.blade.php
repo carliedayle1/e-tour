@@ -39,8 +39,8 @@
                                 <!-- Operating days/time -->
                                 <div>
                                     <x-input-label for="open_time" :value="__('Operating Days/Time')" />
-                                    <x-text-input id="open_time" class="block mt-1 w-full" type="text" name="open_time" :value="old('open_time')" />
-                                    <x-input-error :messages="$errors->get('open_time', $attraction->open_time)" class="mt-2" />
+                                    <x-text-input id="open_time" class="block mt-1 w-full" type="text" name="open_time" :value="old('open_time', $attraction->open_time)" />
+                                    <x-input-error :messages="$errors->get('open_time')" class="mt-2" />
                                 </div>
 
                                 <!-- Average Visit Time -->
