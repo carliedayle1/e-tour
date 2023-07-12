@@ -16,6 +16,7 @@ use Laravel\Cashier\Subscription;
 use App\Models\Plan as ModelsPlan;
 use Illuminate\Support\Facades\Auth;
 
+
 class SubscriptionsController extends Controller
 {
 

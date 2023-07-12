@@ -9,9 +9,13 @@ use Illuminate\Validation\Rules\File;
 
 class AttractionController extends Controller
 {
+
+
     public function index() 
     {
-
+        if(auth()->user()->type !== 'admin') {
+            abort(403, 'Unauthorized Action');
+        }
         return view('attractions.index', [
             'attractions' => Attraction::latest()
             ->filter(request(['search']))
@@ -21,6 +25,9 @@ class AttractionController extends Controller
 
     public function create()
     {
+        if(auth()->user()->type !== 'admin') {
+            abort(403, 'Unauthorized Action');
+        }
         return view('attractions.create');
     }
 
@@ -64,6 +71,9 @@ class AttractionController extends Controller
     }
 
     public function edit(Attraction $attraction){
+        if(auth()->user()->type !== 'admin') {
+            abort(403, 'Unauthorized Action');
+        }
         return view('attractions.edit', [
             'attraction' => $attraction
         ]);

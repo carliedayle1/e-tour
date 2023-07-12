@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AgencyController;
 use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\TravelPackageTypeController;
@@ -116,8 +119,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/attractions/edit/{attraction}', [AttractionController::class, 'edit'])->name('attraction.edit');
     Route::patch('/attractions/update/{attraction}', [AttractionController::class, 'update'])->name('attraction.update');
     Route::delete('/attractions/{attraction}', [AttractionController::class, 'delete'])->name('attraction.delete');
-    
-    
+
+    //Itinerary
+    Route::get('/itineraries', [ItineraryController::class, 'index'])->name('itineraries');
+    Route::post('/itineraries', [ItineraryController::class, 'store'])->name('itinerary.store');
+    Route::get('/itineraries/edit/{itinerary}',[ItineraryController::class, 'edit'])->name('itinerary.edit');
+    Route::get('/itineraries/customize/{itineraryDate}', [ItineraryController::class, 'customize'])->name('itineraries.customize');
+    Route::post('/itineraries/items/store', [ItineraryController::class, 'storeItems'])->name('attractions.store.items');
+
+    //Calendar
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+
+
+
 });
 
 require __DIR__.'/auth.php';

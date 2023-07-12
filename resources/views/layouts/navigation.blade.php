@@ -21,10 +21,16 @@
                     <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
                         {{ __('Compare Travel Packages') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
+                        {{ __('Calendar') }}
+                    </x-nav-link>
                     @endauth
                     @if(auth()->user()?->type == 'traveler')
                     <x-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                         {{ __('Travel Plan and Bookings') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('itineraries')" :active="request()->routeIs('itineraries')">
+                        {{ __('Create your own Itinerary') }}
                     </x-nav-link>
                     @endif
                     @if( auth()->user()?->type == 'agency')
@@ -77,6 +83,15 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('messaging')">
+                            {{ __('Messaging') }}
+
+                            @if(\App\Models\ChMessage::where('seen', false)->count() > 0)
+                                <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{ \App\Models\ChMessage::where('seen', false)->count() }}</span>
+                            @endif
+                            
+                        
                         </x-dropdown-link>
                         @if(auth()->user()?->type == 'agency' && auth()->user()?->stripe_id != null)
                         <x-dropdown-link :href="route('subscription.details')">
@@ -131,10 +146,16 @@
             <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
                 {{ __('Compare Travel Packages') }}
             </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
+                {{ __('Calendar') }}
+            </x-responsive-nav-link>
             @endauth
             @if(auth()->user()?->type == 'traveler')
             <x-responsive-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                 {{ __('Travel Plan and Bookings') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('itineraries')" :active="request()->routeIs('itineraries')">
+                {{ __('Create your own Itinerary') }}
             </x-responsive-nav-link>
             @endif
             @if(auth()->user()?->type == 'agency')
@@ -171,6 +192,12 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('messaging')">
+                    {{ __('Messaging') }}
+                    @if(\App\Models\ChMessage::where('seen', false)->count() > 0)
+                    <span class="bg-pink-100 text-pink-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-pink-900 dark:text-pink-300">{{ \App\Models\ChMessage::where('seen', false)->count() }}</span>
+                    @endif
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('notifications')">
                     {{ __('Notifications') }}

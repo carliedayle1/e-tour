@@ -52,49 +52,55 @@
                                 </thead>
                                 <tbody>
                                     @foreach($bookings as $booking)
-                                    <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
-                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{ $booking->travelPackage->title }}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            {{ $booking->timeslot->date }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $booking->timeslot->hours_days }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            ₱{{ $booking->travelPackageType->fee }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            @if(!$booking->reviewed)
-                                            <button type="button" 
-                                            x-data=""
-                                            x-on:click.prevent="$dispatch('open-modal', 'cancel-booking-{{ $booking->id }}')"
-                                            class="font-medium text-red-600 dark:text-red-500 hover:underline">Cancel Booking</button>
-                                            <x-modal name="cancel-booking-{{ $booking->id }}" :show="$errors->userDeletion->isNotEmpty()" focusable>
-                                                <form method="post" action="/booking/cancel/{{ $booking->id }}" class="p-6">
-                                                    @csrf
-                                        
-                                                    <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                                                        {{ __('Are you sure you want to cancel your booking?') }}
-                                                    </h2>
-                                        
-                                        
-                                                    <div class="mt-6 flex justify-end">
-                                                        <x-danger-button class="mr-3">
-                                                            {{ __('Yes') }}
-                                                        </x-danger-button>
-                                                        <x-secondary-button x-on:click="$dispatch('close')">
-                                                            {{ __('Back') }}
-                                                        </x-secondary-button>
-                                        
+                                    
+                                        <tr class="bg-white border-b dark:bg-gray-900 dark:border-gray-700">
+                                          
+                                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                <a href="/travel-packages/view/{{ $booking->travelPackage->id }}" class="cursor-pointer">
+                                                {{ $booking->travelPackage->title }}
+                                                </a>
+                                            </th>
+                                            <td class="px-6 py-4">
+                                                {{ $booking->timeslot->date }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                {{ $booking->timeslot->hours_days }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                ₱{{ $booking->travelPackageType->fee }}
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                @if($booking->reviewed === false)
+                                                <button type="button" 
+                                                x-data=""
+                                                x-on:click.prevent="$dispatch('open-modal', 'cancel-booking-{{ $booking->id }}')"
+                                                class="font-medium text-red-600 dark:text-red-500 hover:underline">Cancel Booking</button>
+                                                <x-modal name="cancel-booking-{{ $booking->id }}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                                    <form method="post" action="/booking/cancel/{{ $booking->id }}" class="p-6">
+                                                        @csrf
+                                            
+                                                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                                            {{ __('Are you sure you want to cancel your booking?') }}
+                                                        </h2>
+                                            
+                                            
+                                                        <div class="mt-6 flex justify-end">
+                                                            <x-danger-button class="mr-3">
+                                                                {{ __('Yes') }}
+                                                            </x-danger-button>
+                                                            <x-secondary-button x-on:click="$dispatch('close')">
+                                                                {{ __('Back') }}
+                                                            </x-secondary-button>
+                                            
 
-                                                    </div>
-                                                </form>
-                                            </x-modal>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                                        </div>
+                                                    </form>
+                                                </x-modal>
+                                                @endif
+                                            </td>
+                                       
+                                        </tr>
+                                   
                                     @endforeach
                                 </tbody>
                             </table>

@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Create Tourist Attractions') }}
+            {{ __('Create Your Own Itinerary') }}
         </h2>
     </x-slot>
 
@@ -113,14 +113,14 @@
 
                                  <!-- Coordinates -->
                                  <div>
-                                    <x-input-label for="latitude" :value="__('Latitude')" />
-                                    <x-text-input id="latitude" class="block mt-1 w-full" type="text" name="latitude" :value="old('latitude')" />
-                                    <x-input-error :messages="$errors->get('latitude')" class="mt-2" />
-                                </div>
-                                 <div>
                                     <x-input-label for="longitude" :value="__('Longitude')" />
                                     <x-text-input id="longitude" class="block mt-1 w-full" type="text" name="longitude" :value="old('longitude')" />
                                     <x-input-error :messages="$errors->get('longitude')" class="mt-2" />
+                                </div>
+                                <div>
+                                    <x-input-label for="latitude" :value="__('Latitude')" />
+                                    <x-text-input id="latitude" class="block mt-1 w-full" type="text" name="latitude" :value="old('latitude')" />
+                                    <x-input-error :messages="$errors->get('latitude')" class="mt-2" />
                                 </div>
                             </div>
                            <button type="submit" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 uppercase transition ease-in-out duration-150">Create Tourist Attraction</button>

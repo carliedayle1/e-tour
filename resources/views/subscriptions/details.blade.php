@@ -88,13 +88,13 @@
                                         {{ $sub->name }}
                                     </th>
                                     <td class="px-6 py-4">
-                                        {{ $sub->plan->billing_period }}
+                                        {{ $sub->plan?->billing_period }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $sub->stripe_status }}
                                     </td>
                                     <td class="px-6 py-4">
-                                        ₱{{ ($sub->plan->price/100) }}
+                                        ₱{{ ($sub->plan?->price/100) }}
                                     </td>
                                     <td class="px-6 py-4">
                                         {{ $sub->created_at->format('M d, Y') }}
