@@ -138,7 +138,7 @@
                                         {{ $itinerary->description }} 
                                     </th>
                                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                        @if($itinerary->percentDateFilled() === 100)
+                                        @if($itinerary->percentDateFilled() >= 100)
                                         <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ $itinerary->percentDateFilled() . ' %' }}</span>
                                         @else
                                         <span data-tooltip-target="tooltip-default" class="bg-red-100 text-red-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">{{ $itinerary->percentDateFilled() . ' %' }}</span>

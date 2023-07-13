@@ -56,7 +56,7 @@ class ItineraryController extends Controller
 
     public function edit(Itinerary $itinerary)
     {
-        if($itinerary->user->id !== auth()->user()->id){
+        if(auth()->user()->type === 'agency'){
             abort(403, 'Unauthorized Action');
         }
         
