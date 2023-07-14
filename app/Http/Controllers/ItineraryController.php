@@ -167,18 +167,23 @@ class ItineraryController extends Controller
 
             $deleteDates = $itinerary->dates->whereNotIn('actual_date', $dates);
             $newDates = $insertDates->whereNotIn('date', $itinerary->dates->pluck('actual_date')->toArray());
-            foreach($newDates->toArray() as $date){
-                $itinerary_dates[] = new ItineraryDate([
-                    'itinerary_id' => $itinerary->id,
-                    'actual_date' => $date['date']]);
+
+            if(count($newDates) !== 0){
+                foreach($newDates->toArray() as $date){
+                    $itinerary_dates[] = new ItineraryDate([
+                        'itinerary_id' => $itinerary->id,
+                        'actual_date' => $date['date']]);
+                }
+                $itinerary->dates()->saveMany($itinerary_dates);
             }
+
 
             foreach($deleteDates as $date){
                 $date->items()->delete();
                 $date->delete();
             }
 
-            $itinerary->dates()->saveMany($itinerary_dates);
+           
 
         }
        
