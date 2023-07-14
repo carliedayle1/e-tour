@@ -116,9 +116,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Name
                                     </th>
-                                    <th scope="col" class="px-6 py-3">
+                                    {{-- <th scope="col" class="px-6 py-3">
                                         Description
-                                    </th>
+                                    </th> --}}
                                     <th scope="col" class="px-6 py-3">
                                         Completion
                                     </th>
@@ -134,9 +134,9 @@
                                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $itinerary->name }}
                                     </th>
-                                    <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                    {{-- <th class="px-6 py-4 text-ellipsis font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         {{ $itinerary->description }} 
-                                    </th>
+                                    </th> --}}
                                     <th class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                         @if($itinerary->percentDateFilled() >= 100)
                                         <span class="bg-yellow-100 text-yellow-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">{{ $itinerary->percentDateFilled() . ' %' }}</span>
@@ -193,7 +193,7 @@
                     @else 
                     
                         <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                            <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">No tourist attractions at the moment..</h5>
+                            <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">You have no created itineraries at the moment..</h5>
                             
                         </div>
 

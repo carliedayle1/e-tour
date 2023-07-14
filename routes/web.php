@@ -125,7 +125,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/itineraries', [ItineraryController::class, 'store'])->name('itinerary.store');
     Route::get('/itineraries/edit/{itinerary}',[ItineraryController::class, 'edit'])->name('itinerary.edit');
     Route::get('/itineraries/customize/{itineraryDate}', [ItineraryController::class, 'customize'])->name('itineraries.customize');
-    Route::post('/itineraries/items/store', [ItineraryController::class, 'storeItems'])->name('attractions.store.items');
+    Route::post('/itineraries/items/store', [ItineraryController::class, 'storeItems'])->name('itinerary.store.items');
+    Route::patch('/itineraries/update/{itinerary}', [ItineraryController::class, 'update'])->name('itinerary.update');
+    Route::delete('/itineraries/date/delete/{date}', [ItineraryController::class, 'deleteDate'])->name('itinerary.delete.date');
+    Route::delete('/itineraries/{itinerary}', [ItineraryController::class, 'delete'])->name('itinerary.delete');
 
     //Calendar
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');

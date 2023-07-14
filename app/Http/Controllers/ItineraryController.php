@@ -143,6 +143,74 @@ class ItineraryController extends Controller
 
     }
 
+    public function update(Itinerary $itinerary, Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|min:3|max:255',
+            'description' => 'required|string',
+            'start_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:start_date',
+        ]);
+
+        if(Carbon::parse($validated['start_date']) !== $itinerary->start_date || Carbon::parse($validated['end_date']) !== $itinerary->end_date){
+
+            $start_date = Carbon::parse($validated['start_date']);
+            $end_date = Carbon::parse($validated['end_date']);
+            $days = $start_date->range($end_date, 1, 'day');
+
+            $dates = array();
+            $insertDates = collect();
+            foreach ($days->toArray() as $date) {
+                $dates[] = $date->toFormattedDateString();
+                $insertDates->push(['date' => $date->toFormattedDateString()]);
+            }
+
+            $deleteDates = $itinerary->dates->whereNotIn('actual_date', $dates);
+            $newDates = $insertDates->whereNotIn('date', $itinerary->dates->pluck('actual_date')->toArray());
+            foreach($newDates->toArray() as $date){
+                $itinerary_dates[] = new ItineraryDate([
+                    'itinerary_id' => $itinerary->id,
+                    'actual_date' => $date['date']]);
+            }
+
+            foreach($deleteDates as $date){
+                $date->items()->delete();
+                $date->delete();
+            }
+
+            $itinerary->dates()->saveMany($itinerary_dates);
+
+        }
+       
+        $itinerary->update($validated);
+
+        toast('Itinerary created successfully!','success');
+        return back();
+    }
+
+    public function delete(Itinerary $itinerary)
+    {
+        foreach($itinerary->dates as $date){
+            $date->items()->delete();
+            $date->delete();
+        }
+
+        $itinerary->delete();
+
+        toast('Itinerary deleted!','warning');
+        return back();
+    }
+
+    public function deleteDate(ItineraryDate $date)
+    {
+        $date->items()->delete();
+        $date->delete();
+
+        toast('Itinerary date deleted!','warning');
+        return back();
+    }
+
+
     public function distance($lat1, $lon1, $lat2, $lon2) {
         if (($lat1 == $lat2) && ($lon1 == $lon2)) {
           return 0;
@@ -157,4 +225,6 @@ class ItineraryController extends Controller
           return number_format((float)($miles * 1.609344), 2, '.', '');
         }
       }
+
+
 }

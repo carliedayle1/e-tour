@@ -30,10 +30,12 @@ class CalendarController extends Controller
                 return (object)[
                     'title' => $item->name,
                     'start' => Carbon::parse($item->start_date)->toDateString(),
-                    'end' => Carbon::parse($item->end_date)->toDateString(),
+                    'end' => Carbon::parse($item->end_date)->addDay()->toDateString(),
                     'url' => '/itineraries/edit/'. $item->id
                 ];
             })->toArray();
+
+            // dd($events2);
 
             $events = array_merge($events1, $events2);
         }
@@ -69,7 +71,7 @@ class CalendarController extends Controller
                 return (object)[
                     'title' => $item->name,
                     'start' => Carbon::parse($item->start_date)->toDateString(),
-                    'end' => Carbon::parse($item->end_date)->toDateString(),
+                    'end' => Carbon::parse($item->end_date)->addDay()->toDateString(),
                     'url' => '/itineraries/edit/'. $item->id
                 ];
             })->toArray();
