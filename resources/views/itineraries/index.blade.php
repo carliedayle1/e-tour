@@ -151,7 +151,7 @@
                                     
                                     <td class="px-6 py-4 text-right ">
                                         <div class="flex justify-center space-x-4">
-                                            <a href="/itineraries/{{ $itinerary->id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View</a>
+                                            <a href="/reports/itineraries/{{ $itinerary->id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Export to PDF</a>
                                             <a href="/itineraries/edit/{{ $itinerary->id }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">Edit</a>
                                             <button data-modal-target="deleteItinerary-{{ $itinerary->id }}" data-modal-toggle="deleteItinerary-{{ $itinerary->id }}" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</button>
                                         </div>

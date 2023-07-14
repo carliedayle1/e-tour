@@ -69,7 +69,8 @@
                                             <td class="px-6 py-4">
                                                 ₱{{ $booking->travelPackageType->fee }}
                                             </td>
-                                            <td class="px-6 py-4">
+                                            <td class="flex px-6 py-4 gap-x-4">
+                                                <a href="/travel-packages/view/{{ $booking->travelPackage->id }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">View Package</a>
                                                 @if($booking->reviewed === false)
                                                 <button type="button" 
                                                 x-data=""
@@ -96,6 +97,8 @@
                                                         </div>
                                                     </form>
                                                 </x-modal>
+                                                @else
+                                                <a href="/reports/bookings/{{ $booking->id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Export to PDF</a>
                                                 @endif
                                             </td>
                                        

@@ -18,14 +18,14 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Browse Travel Packages') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                        {{ __('Compare Travel Packages') }}
-                    </x-nav-link>
                     <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
                     </x-nav-link>
                     @endauth
                     @if(auth()->user()?->type == 'traveler')
+                    <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                        {{ __('Compare Travel Packages') }}
+                    </x-nav-link>
                     <x-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                         {{ __('Travel Plan and Bookings') }}
                     </x-nav-link>
@@ -36,6 +36,9 @@
                     @if( auth()->user()?->type == 'agency')
                         <x-nav-link :href="route('package.index')" :active="request()->routeIs('package.index')">
                             {{ __('Travel Packages') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                            {{ __('Compare Travel Packages') }}
                         </x-nav-link>
                         <x-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
                             {{ __('Bookings') }}
@@ -143,14 +146,14 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Browse Travel Packages') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                {{ __('Compare Travel Packages') }}
-            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                 {{ __('Calendar') }}
             </x-responsive-nav-link>
             @endauth
             @if(auth()->user()?->type == 'traveler')
+            <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                {{ __('Compare Travel Packages') }}
+            </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                 {{ __('Travel Plan and Bookings') }}
             </x-responsive-nav-link>
@@ -161,6 +164,9 @@
             @if(auth()->user()?->type == 'agency')
                 <x-responsive-nav-link :href="route('package.index')" :active="request()->routeIs('package.index')">
                     {{ __('Travel Packages') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
+                    {{ __('Compare Travel Packages') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
                     {{ __('Bookings') }}

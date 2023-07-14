@@ -12,6 +12,7 @@ use App\Http\Controllers\ItineraryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\TravelPackageTypeController;
@@ -132,6 +133,10 @@ Route::middleware('auth')->group(function () {
 
     //Calendar
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar');
+
+    //Reports
+    Route::get('/reports/itineraries/{itinerary}', [ReportsController::class, 'itinerary'])->name('reports.itinerary');
+    Route::get('/reports/bookings/{booking}', [ReportsController::class, 'booking'])->name('reports.booking');
 
 
 
