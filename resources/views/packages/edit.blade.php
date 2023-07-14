@@ -75,7 +75,7 @@
                                 </div>
                                 <!-- Average hours/days -->
                                 <div>
-                                    <x-input-label for="hours_days" :value="__('Average Hours or Days')" />
+                                    <x-input-label for="hours_days" name="hours_days" :value="__('Average Hours or Days')" />
                                     <x-text-input id="hours_days" class="block mt-1 w-full" type="text" name="hours_days" :value="old('hours_days', $travel_package->timeslots()->latest()->first()->hours_days)" />
                                     <x-input-error :messages="$errors->get('hours_days')" class="mt-2" />
                                 </div>

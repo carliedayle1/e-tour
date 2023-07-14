@@ -135,7 +135,7 @@ class TravelPackageController extends Controller
         $request->validate([
             'title' => 'required|min:3',
             'description' => 'required|min:6',
-            'start_date' => 'required|date|after_or_equal:today',
+            'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'slot' => 'required|numeric|integer|min:1',
             'hours_days' => 'required',
