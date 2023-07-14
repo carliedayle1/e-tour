@@ -8,9 +8,13 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
            
-                    
+            <div>
+                <a href="javascript:history.back()" type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Back</a>
+            </div>
                     <section class="bg-white dark:bg-gray-900">
                         <div class="py-8 px-4 mx-auto max-w-6xl lg:py-16">
+
+                            
                             <h2 class="mb-6 text-xl font-semibold leading-none text-gray-900 md:text-4xl dark:text-white">{{ $travel_package->title }}</h2>
                             
                             <dl>

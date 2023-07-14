@@ -16,7 +16,7 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Browse Travel Packages') }}
+                        {{ __('Browse') }}
                     </x-nav-link>
                     <x-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                         {{ __('Calendar') }}
@@ -24,7 +24,7 @@
                     @endauth
                     @if(auth()->user()?->type == 'traveler')
                     <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                        {{ __('Compare Travel Packages') }}
+                        {{ __('Compare') }}
                     </x-nav-link>
                     <x-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                         {{ __('Travel Plan and Bookings') }}
@@ -38,7 +38,7 @@
                             {{ __('Travel Packages') }}
                         </x-nav-link>
                         <x-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                            {{ __('Compare Travel Packages') }}
+                            {{ __('Compare') }}
                         </x-nav-link>
                         <x-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
                             {{ __('Bookings') }}
@@ -144,7 +144,7 @@
         <div class="pt-2 pb-3 space-y-1">
             @auth
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Browse Travel Packages') }}
+                {{ __('Browse') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('calendar')" :active="request()->routeIs('calendar')">
                 {{ __('Calendar') }}
@@ -152,7 +152,7 @@
             @endauth
             @if(auth()->user()?->type == 'traveler')
             <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                {{ __('Compare Travel Packages') }}
+                {{ __('Compare') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('travel.plan')" :active="request()->routeIs('travel.plan')">
                 {{ __('Travel Plan and Bookings') }}
@@ -166,7 +166,7 @@
                     {{ __('Travel Packages') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('package.compare')" :active="request()->routeIs('package.compare')">
-                    {{ __('Compare Travel Packages') }}
+                    {{ __('Compare') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('bookings')" :active="request()->routeIs('bookings')">
                     {{ __('Bookings') }}

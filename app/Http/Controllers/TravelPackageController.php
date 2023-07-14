@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Attraction;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Models\Booking;
@@ -408,11 +409,24 @@ class TravelPackageController extends Controller
             $package_2 = TravelPackage::where('id', $request->package2)->get()->first();
         }
 
+        $attraction_1 = null;
+        if(isset($request->attraction1)){
+            $attraction_1 = Attraction::where('id', $request->attraction1)->get()->first();
+        }
+
+        $attraction_2 = null;
+        if(isset($request->attraction2)){
+            $attraction_2 = Attraction::where('id', $request->attraction2)->get()->first();
+        }
+
 
         return view('packages.compare', [
-            'travel_packages' => TravelPackage::all(),
+            'travel_packages' => TravelPackage::latest()->get(),
+            'attractions' => Attraction::latest()->get(),
             'package_1' => $package_1,
-            'package_2' => $package_2
+            'package_2' => $package_2,
+            'attraction_1' => $attraction_1,
+            'attraction_2' => $attraction_2,
         ]);
     }
 

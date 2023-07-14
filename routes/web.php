@@ -16,6 +16,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\SubscriptionsController;
 use App\Http\Controllers\TravelPackageController;
 use App\Http\Controllers\TravelPackageTypeController;
+use App\Models\Attraction;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,13 +33,15 @@ Route::get('/', function () {
 
     return view('welcome', [
         'travel_packages' => TravelPackage::where('status', 'active')->latest()->filter(request(['search']))->paginate(6),
-        'locations' => Location::all()->pluck('image')
+        'locations' => Location::all()->pluck('image'),
+        'attractions' => Attraction::latest()->filter(request(['search']))->paginate(6)
     ]);
 });
 
 Route::get('/dashboard', function () {
     return view('dashboard', [
-        'travel_packages' => TravelPackage::where('status', 'active')->latest()->filter(request(['search']))->paginate(6)
+        'travel_packages' => TravelPackage::where('status', 'active')->latest()->filter(request(['search']))->paginate(6),
+        'attractions' => Attraction::latest()->filter(request(['search']))->paginate(6)
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -79,7 +82,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/packages/book', [TravelPackageController::class, 'bookPackage'])->name('package.book');
     Route::get('/travel-plan', [TravelPackageController::class, 'travelPlan'])->name('travel.plan');
     Route::get('/travel-packages/compare', [TravelPackageController::class, 'compare'])->name('package.compare');
-    // Route::post('//travel-packages/compare', [TravelPackageController::class, 'compare2'])->name('package.compare2');
 
 
     //Bookings
