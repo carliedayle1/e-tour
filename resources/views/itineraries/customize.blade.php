@@ -94,7 +94,7 @@
                                         name="attractions[]"
                                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -112,7 +112,7 @@
                                         <label for="attraction2" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #2</label>
                                         <select @change="handleAttraction2" name="attractions[]" id="attraction2" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -129,7 +129,7 @@
                                         <label for="attraction3" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #3</label>
                                         <select @change="handleattraction3" name="attractions[]" id="attraction3" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -146,7 +146,7 @@
                                         <label for="attraction4" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #4</label>
                                         <select @change="handleattraction4" name="attractions[]" id="attraction4" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -162,7 +162,7 @@
                                         <label for="attraction5" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #5</label>
                                         <select @change="handleattraction5" name="attractions[]" id="attraction5" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -177,7 +177,7 @@
                                         <label for="attraction6" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #6</label>
                                         <select @change="handleattraction6" name="attractions[]" id="attraction6" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -192,7 +192,7 @@
                                         <label for="attraction7" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #7</label>
                                         <select @change="handleattraction7" name="attractions[]" id="attraction7" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
@@ -207,7 +207,7 @@
                                         <label for="attraction8" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tourist Attraction #8</label>
                                         <select @change="handleattraction8" name="attractions[]" id="attraction8" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                         >
-                                            <option selected disabled>Choose a tourist attraction</option>
+                                            <option selected disabled></option>
                                             @foreach($attractions as $attraction)
                                             <option value="{{ $attraction->id }}" latitude="{{ $attraction->latitude }}" longitude="{{ $attraction->longitude }}">{{ $attraction->title }}</option>
                                             @endforeach
