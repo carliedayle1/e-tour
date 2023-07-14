@@ -28,7 +28,6 @@ class ReportsController extends Controller
         ];
         $pdf = Pdf::loadView('reports.booking', $data);
 
-        return $pdf->stream();
-        // return $pdf->download($booking->name .'.pdf');
+        return $pdf->download($booking->travelPackage->title .'.pdf');
     }
 }

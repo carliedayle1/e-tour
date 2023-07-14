@@ -14,7 +14,7 @@
     </div>
 
     <div class="flex flex-col justify-center items-center mt-9">
-            <h3  class="font-bold text-lg">Booked Date: <span>{{ $booking->timeslot->date }}</span></h3>
+            <h3  class="font-bold text-lg">Scheduled Date: <span>{{ $booking->timeslot->date }}</span></h3>
             <h3 class="font-bold text-lg">Duration : <span>{{ $booking->timeslot->hours_days }}</span></h3>
             <h3  class="font-bold text-lg">Fee: <span>Php {{ $booking->travelPackageType->fee }}</span></h3>
     </div>
