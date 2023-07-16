@@ -164,11 +164,12 @@ class TravelPackageController extends Controller
                 foreach($newDates->toArray() as $date){
                     $schedule_dates[] = new Timeslot([
                         'travel_package_id' => 1,
-                        'date' => $date->toFormattedDateString(),
+                        'date' => $date['date'],
                         'slots' => $request['slot'],
                         'hours_days' => $request['hours_days'],
                     ]);
                 }
+
                 $package->timeslots()->saveMany($schedule_dates);
             }
 
@@ -183,9 +184,6 @@ class TravelPackageController extends Controller
                 $timeslot->delete();
             }
         }
-
-
-        $this->createTimeslots($request, $package);
 
         $package->update([
             'title' => $request['title'],
@@ -362,9 +360,10 @@ class TravelPackageController extends Controller
                 return $timeslot;
             }
         });
+
         return view('packages.authTravelerView', [
             'travel_package' => $package, 
-            'timeslots' => $timeslots,
+            'timeslots' => $timeslots->reverse(),
             'booking' => $booking
         ]);
     }
