@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use App\Models\TravelPackage;
 use App\Models\TravelPackageType;
 use App\Notifications\CancelBooking;
+use App\Notifications\DeleteBooking;
 use App\Notifications\NewBooking;
 use Illuminate\Validation\Rules\File;
 use App\Notifications\NewTravelPackage;
@@ -132,7 +133,7 @@ class TravelPackageController extends Controller
 
     public function update(TravelPackage $package, Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'title' => 'required|min:3',
             'description' => 'required|min:6',
             'start_date' => 'required|date',
@@ -143,7 +144,46 @@ class TravelPackageController extends Controller
             'hours_days.required' => 'Average hours/days is required.',
         ]);
 
-        $package->timeslots()->delete();
+        if(Carbon::parse($validated['start_date']) !== $package->start_date || Carbon::parse($validated['end_date']) !== $package->end_date){
+
+            $start_date = Carbon::parse($validated['start_date']);
+            $end_date = Carbon::parse($validated['end_date']);
+            $days = $start_date->range($end_date, 1, 'day');
+
+            $dates = array();
+            $insertDates = collect();
+            foreach ($days->toArray() as $date) {
+                $dates[] = $date->toFormattedDateString();
+                $insertDates->push(['date' => $date->toFormattedDateString()]);
+            }
+
+            $deleteDates = $package->timeslots->whereNotIn('date', $dates);
+            $newDates = $insertDates->whereNotIn('date', $package->timeslots->pluck('date')->toArray());
+
+            if(count($newDates) !== 0){
+                foreach($newDates->toArray() as $date){
+                    $schedule_dates[] = new Timeslot([
+                        'travel_package_id' => 1,
+                        'date' => $date->toFormattedDateString(),
+                        'slots' => $request['slot'],
+                        'hours_days' => $request['hours_days'],
+                    ]);
+                }
+                $package->timeslots()->saveMany($schedule_dates);
+            }
+
+
+            foreach($deleteDates as $timeslot){
+
+                foreach($timeslot->bookings as $booking){
+                    Notification::send($booking->user, new DeleteBooking($booking->travelPackage, $timeslot, $booking->user));
+                    
+                }
+                $timeslot->bookings()->delete();
+                $timeslot->delete();
+            }
+        }
+
 
         $this->createTimeslots($request, $package);
 
@@ -165,6 +205,10 @@ class TravelPackageController extends Controller
             }
         });
 
+        foreach($package->bookings as $booking){
+            Notification::send($booking->user, new DeleteBooking($booking->travelPackage, $booking->timeslot, $booking->user));
+            
+        }
         $package->locations()->delete();
         $package->timeslots()->delete();
         $package->packageTypes()->delete();

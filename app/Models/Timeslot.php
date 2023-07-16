@@ -16,4 +16,11 @@ class Timeslot extends Model
         return $this->belongsTo(TravelPackage::class);
     }
 
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
+
+
+
 }

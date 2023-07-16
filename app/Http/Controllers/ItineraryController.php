@@ -182,9 +182,6 @@ class ItineraryController extends Controller
                 $date->items()->delete();
                 $date->delete();
             }
-
-           
-
         }
        
         $itinerary->update($validated);
