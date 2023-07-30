@@ -23,16 +23,17 @@ class SubscriptionsController extends Controller
     public function index()
     {
 
-        $subscriptions = Subscription::count();
+        $subscriptions = Subscription::all();
         $packages = TravelPackage::count();
         $users = User::where('stripe_id', '!=', null)->count();
 
         return view('subscriptions.index', [
             'intent' => auth()->user()->createSetupIntent(),
             'plans' => ModelsPlan::all(),
-            'subscriptions_count' => $subscriptions,
+            'subscriptions_count' => $subscriptions->count(),
             'packages_count' => $packages,
-            'users_count' => $users
+            'users_count' => $users,
+            'subscriptions' => $subscriptions
         ]);
     }
 

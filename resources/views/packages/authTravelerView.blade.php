@@ -15,8 +15,13 @@
                         <div class="py-8 px-4 mx-auto max-w-6xl lg:py-16">
 
                             
-                            <h2 class="mb-6 text-xl font-semibold leading-none text-gray-900 md:text-4xl dark:text-white">{{ $travel_package->title }}</h2>
-                            
+                            <h2 class="mb-6 text-xl font-semibold leading-none md:text-4xl text-gray-900 dark:text-white">{{ $travel_package->title }}</h2>
+                            <dl>
+                                <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Created By</dt>
+                                <a href="/profile/{{ $travel_package->agency->user->id }}">
+                                    <dd class="mb-4 font-bold text-xl sm:mb-5 text-gray-900 dark:text-white">{{ $travel_package->agency->name }}</dd>
+                                </a>
+                            </dl>
                             <dl>
                                 <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Details</dt>
                                 <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{ $travel_package->description }}</dd>
@@ -204,10 +209,10 @@
                                         <div class="flex space-x-4 content-center">
 
                                             <div class="flex justify-between items-center">
-                                              <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Feedback</h2>
+                                              <h2 class="text-lg lg:text-2xl font-bold text-gray-900 dark:text-white">Feedback and Comments</h2>
                                             </div>
                                      
-                                            <div class="flex items-center">
+                                            {{-- <div class="flex items-center">
                                                 @for($i = 1; $i <= 5; $i++)
                                                     @if($i <= intval($travel_package->feedbacks->avg('stars')))
                                                     <svg aria-hidden="true" class="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><title>First star</title><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
@@ -220,7 +225,7 @@
                                                 <p class="ml-2 text-sm font-medium text-gray-500 dark:text-gray-400">{{ $travel_package->feedbacks->avg('stars') }} out of 5</p>
                                                 <span class="w-1 h-1 mx-1.5 bg-gray-500 rounded-full dark:bg-gray-400"></span>
                                                 <a href="#" class="text-sm font-medium text-gray-900 underline hover:no-underline dark:text-white">{{ $travel_package->feedbacks->count() }} reviews</a>
-                                            </div>
+                                            </div> --}}
 
                                         </div>
                                         @if($booking?->user?->id == auth()->user()->id && $booking?->reviewed == false)
@@ -261,7 +266,7 @@
                                                     <p class="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white">{{ $feedback->user->name }}</p>
                                                     <p class="text-sm text-gray-600 dark:text-gray-400">{{ $feedback->created_at->diffForHumans() }}</p>
                                                 </div>
-                                                @if($feedback->user->id == auth()->user()->id)
+                                                {{-- @if($feedback->user->id == auth()->user()->id)
                                                 <button id="dropdownComment1Button" data-dropdown-toggle="dropdownComment1"
                                                     class="inline-flex items-center p-2 text-sm font-medium text-center text-gray-400 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-50 dark:bg-gray-900 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                                                     type="button">
@@ -280,13 +285,67 @@
                                                     <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
                                                         aria-labelledby="dropdownMenuIconHorizontalButton">
                                                         <li>
-                                                            <a href="#"
-                                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</a>
+                                                            <button
+                                                            x-data=""
+                                                            x-on:click.prevent="$dispatch('open-modal', 'edit-feedback')"
+                                                            class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Edit</button>
+                                                            
+
+                                                              
                                                         </li>
                                                        
                                                     </ul>
                                                 </div>
-                                                @endif
+                                                <x-modal name="edit-feedback" :show="$errors->isNotEmpty()" focusable>
+                                                    <form method="post" action="/feedback/{{ $feedback->id }}" class="p-6">
+                                                        @csrf
+                                                        @method('PATCH')
+                                                        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
+                                                            {{ __('Edit Feedback') }}
+                                                        </h2>
+                                            
+                                                        <input type="hidden" value="{{ $travel_package->id }}" name="travel_package_id" >
+                                                        <input type="hidden" value="{{ $booking->id }}" name="booking_id" >
+                                                        <div class="my-6">
+                
+                                                            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Please select a rating</label>
+                                                            <select id="countries" name="stars" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                                            <option value="1" @selected($feedback->stars === 1)>1 Star</option>
+                                                            <option value="2" @selected($feedback->stars === 2)>2 Stars</option>
+                                                            <option value="3" @selected($feedback->stars === 3)>3 Stars</option>
+                                                            <option value="4" @selected($feedback->stars === 4)>4 Stars</option>
+                                                            <option value="5" @selected($feedback->stars === 5)>5 Stars</option>
+                                                            </select>
+                                                            
+                
+                                                        </div>
+                                                    
+                                                        <div class="mt-6">
+                                                            <x-input-label for="feedback" value="{{ __('Edit Feedback') }}" class="sr-only" />
+                                            
+                                                            <x-textarea-input
+                                                                id="feedback"
+                                                                name="feedback"
+                                                                type="feedback"
+                                                                class="mt-1 block w-3/4"
+                                                                value="{{ old('feedback', $feedback->message) }}"
+                                                            />
+                                            
+                                                            <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
+                                                        </div>
+                                            
+                                                        <div class="mt-6 flex justify-end">
+                                                            <x-secondary-button x-on:click="$dispatch('close')">
+                                                                {{ __('Cancel') }}
+                                                            </x-secondary-button>
+                                            
+                                                            <x-primary-button class="ml-3">
+                                                                {{ __('Submit') }}
+                                                            </x-primary-button>
+                                                        </div>
+                                                    </form>
+                                                </x-modal>
+                                                @endif --}}
                                             </footer>
                                             <p class="text-gray-500 dark:text-gray-400">{{ $feedback->message }}</p>
                                             

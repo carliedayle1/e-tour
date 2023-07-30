@@ -66,7 +66,7 @@
                                 <!-- Description -->
                                 <div>
                                     <x-input-label for="description" :value="__('Description')" />
-                                    <x-text-input id="description" disabled class="block mt-1 w-full" type="text" name="description" :value="old('description', $travel_package->description)" />
+                                    <x-textarea-input id="description" disabled class="block mt-1 w-full" type="text" name="description" :value="old('description', $travel_package->description)" />
                                 </div>
                                 <!-- Start and End Date -->
                                 <div>

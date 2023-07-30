@@ -8,6 +8,10 @@
 
 </head>
 <body>
+    <div class="shrink-0 flex justify-center items-center space-x-4">
+        <x-application-logo-name class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+        <span class="text-gray-900 text-2xl font-bold dark:text-white">E-TOUR</span>
+    </div>
     <div class="text-center">
         <h1 class="text-3xl font-bold">{{ $itinerary->name }}</h1>
         <p class="mt-6 text-md">{{ $itinerary->description }}</p>

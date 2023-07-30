@@ -4,9 +4,9 @@
             {{ __('Agency Information') }}
         </h2>
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
+        {{-- <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
             {{ __("Update your agency's information.") }}
-        </p>
+        </p> --}}
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
@@ -18,7 +18,7 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Owner Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" readonly  />
         </div>
 
@@ -28,7 +28,7 @@
         </div>
 
         <div>
-            <x-input-label for="description" :value="__('Agency Description')" />
+            <x-input-label for="description" :value="__('About Us')" />
             <x-textarea-input id="description" class="block mt-1 w-full" name="description" :value="old('description', $user?->agency?->description)" required autofocus autocomplete="description" readonly />
         </div>
        

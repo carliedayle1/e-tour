@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
-                    @if(auth()->user()->type == 'agency')
+                    @if($user->type == 'agency')
                         @include('profile.partials.view-agency-information-form')
                     @else   
                         @include('profile.partials.view-profile-information-form')
@@ -17,11 +17,13 @@
                 </div>
             </div>
 
+            @if(auth()->user()->type === 'admin')
             <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
                 <div class="max-w-xl">
                     @include('profile.partials.view-delete-user-form')
                 </div>
             </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

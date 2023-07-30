@@ -87,9 +87,9 @@
                                     <th scope="col" class="px-6 py-3">
                                         Price
                                     </th>
-                                    {{-- <th scope="col" class="px-6 py-3">
+                                    <th scope="col" class="px-6 py-3">
                                         Action
-                                    </th> --}}
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -107,14 +107,65 @@
                                     <td class="px-6 py-4">
                                         ₱{{ ($plan->price/100) }}
                                     </td>
-                                    {{-- <td class="px-6 py-4">
-                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
-                                    </td> --}}
+                                    <td class="px-6 py-4">
+                                        <button x-data=""
+                                        x-on:click.prevent="$dispatch('open-modal', 'view-subscription-{{ $plan->id }}')" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">View Subscriptions</button>
+                                    </td>
+                                   
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
+
+                    @foreach($plans as $plan)
+                        <x-modal name="view-subscription-{{ $plan->id }}" focusable>
+                            <div class="p-6">
+                                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-6">
+                                    {{ $plan->name }}
+                                </h2>
+                    
+                    
+                                
+                                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Agency Name
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Subscription Started At
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Subscription Ended At
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($subscriptions as $sub)
+                                                @if(strtoupper($sub->name) === strtoupper($plan->name))
+                                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                        <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                            {{ $sub->user->agency->name }}
+                                                        </th>
+                                                        <td class="px-6 py-4">
+                                                            {{ $sub->created_at->format('M d, Y') }}
+                                                        </td>
+                                                        <td class="px-6 py-4">
+                                                            {{ $sub->ends_at != null ? $sub->ends_at->format('M d, Y'): ''  }}
+                                                        </td>
+                                                    </tr>
+                                                @endif
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </x-modal>
+                    @endforeach
+                    
                 @else 
                 <div class="block max-w-full p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
                     <h5 class="text-lg font-bold tracking-tight text-gray-900 dark:text-white">No subscriptions at the moment..</h5>

@@ -50,4 +50,21 @@ class BookingController extends Controller
         toast('Feedback posted successfully!','success');
         return back();
     }
+
+    public function editFeedback(Feedback $feedback, Request $request)
+    {
+
+        $validated = $request->validate([
+            'stars' => 'required|numeric',
+            'message' => 'required|string'
+        ]);
+
+        $feedback->update([
+            'message' => $validated['message'],
+            'stars' => $validated['stars']
+        ]);
+
+        toast('Feedback updated successfully!','success');
+        return back();
+    }
 }

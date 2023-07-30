@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
 
     //Feedbacks
     Route::post('/bookings/feedback', [BookingController::class, 'storeFeedback'])->name('store.feedback');
+    Route::patch('/feedback/{feedback}', [BookingController::class, 'editFeedback'])->name('feedback.edit');
 
     //Location 
     Route::post('/locations/store/{package}', [LocationController::class, 'store'])->name('location.store');

@@ -97,9 +97,9 @@ class ProfileController extends Controller
 
     public function profile(User $user)
     {
-        if(!auth()->user()->type == 'admin') {
-            abort(403, 'Unauthorized Action');
-        }
+        // if(!auth()->user()->type == 'admin') {
+        //     abort(403, 'Unauthorized Action');
+        // }
 
         return view('profile.index', [
             'user' => $user
