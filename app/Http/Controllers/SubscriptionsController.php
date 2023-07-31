@@ -28,7 +28,7 @@ class SubscriptionsController extends Controller
         $users = User::where('stripe_id', '!=', null)->count();
 
         return view('subscriptions.index', [
-            'intent' => auth()->user()->createSetupIntent(),
+            // 'intent' => auth()->user()->createSetupIntent(),
             'plans' => ModelsPlan::all(),
             'subscriptions_count' => $subscriptions->count(),
             'packages_count' => $packages,
