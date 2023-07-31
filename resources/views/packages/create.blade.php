@@ -26,7 +26,7 @@
                                 <!-- Description -->
                                 <div>
                                     <x-input-label for="description" :value="__('Description')" />
-                                    <x-text-input id="description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" />
+                                    <x-textarea-input id="description" class="block mt-1 w-full" type="text" name="description" :value="old('description')" />
                                     <x-input-error :messages="$errors->get('description')" class="mt-2" />
                                 </div>
                                 <!-- Start and End Date -->
