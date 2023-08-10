@@ -14,6 +14,7 @@ use Laravel\Cashier\Cashier;
 use App\Models\TravelPackage;
 use Laravel\Cashier\Subscription;
 use App\Models\Plan as ModelsPlan;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -164,6 +165,7 @@ class SubscriptionsController extends Controller
 
     public function details()
     {
+        dd(auth()->user()->subscription->ends_at->diffInDays(Carbon::now()));
         return view('subscriptions.details', [
             'subscriptions' => Subscription::where('user_id', auth()->user()->id)->get()
         ]);

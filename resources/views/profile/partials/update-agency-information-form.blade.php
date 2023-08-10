@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('agency.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('agency.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -28,6 +28,20 @@
             <x-text-input id="agency" name="agency" type="text" class="mt-1 block w-full" :value="old('agency', $user?->agency?->name)" required autofocus autocomplete="agency" />
             <x-input-error class="mt-2" :messages="$errors->get('agency')" />
         </div>
+
+        <div>
+            <x-input-label for="description" :value="__('Certificate of Business')" />
+            <iframe src="{{ asset('/storage/'. $user?->agency?->certificate) }}" frameborder="0" width="100%" class="w-full h-60"></iframe>
+        </div>
+
+        <!-- Certificate of Business -->
+        <div class="mt-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Change Business Certificate</label>
+            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" name="certificate">
+            
+            <x-input-error :messages="$errors->get('certificate')" class="mt-2" />
+        </div>
+
 
         <div>
             <x-input-label for="description" :value="__('Agency Description')" />

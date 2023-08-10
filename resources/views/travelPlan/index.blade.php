@@ -46,6 +46,9 @@
                                             Fee
                                         </th>
                                         <th scope="col" class="px-6 py-3">
+                                            Status
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
                                             Action
                                         </th>
                                     </tr>
@@ -69,14 +72,19 @@
                                             <td class="px-6 py-4">
                                                 ₱{{ $booking->travelPackageType->fee }}
                                             </td>
+                                            <td class="px-6 py-4">
+                                                {{ strtoupper($booking->status) }}
+                                            </td>
                                             <td class="flex px-6 py-4 gap-x-4">
+                                                @if(strtoupper(trim($booking?->status)) != "CANCELLED" || $booking->status === null)
                                                 <a href="/travel-packages/view/{{ $booking->travelPackage->id }}" class="font-medium text-green-600 dark:text-green-500 hover:underline">View Package</a>
-                                                @if($booking->reviewed === false)
-                                                <button type="button" 
-                                                x-data=""
-                                                x-on:click.prevent="$dispatch('open-modal', 'cancel-booking-{{ $booking->id }}')"
-                                                class="font-medium text-red-600 dark:text-red-500 hover:underline">Cancel Booking</button>
-                                                <x-modal name="cancel-booking-{{ $booking->id }}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                              
+                                                    <button type="button" 
+                                                    x-data=""
+                                                    x-on:click.prevent="$dispatch('open-modal', 'cancel-booking-{{ $booking->id }}')"
+                                                    class="font-medium text-red-600 dark:text-red-500 hover:underline">Cancel Booking</button>
+                                               
+                                                <x-modal name="cancel-booking-{{ $booking->id }}" :show="$errors->isNotEmpty()" focusable>
                                                     <form method="post" action="/booking/cancel/{{ $booking->id }}" class="p-6">
                                                         @csrf
                                             
@@ -97,7 +105,7 @@
                                                         </div>
                                                     </form>
                                                 </x-modal>
-                                                @else
+                                               
                                                 <a href="/reports/bookings/{{ $booking->id }}" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Export to PDF</a>
                                                 @endif
                                             </td>

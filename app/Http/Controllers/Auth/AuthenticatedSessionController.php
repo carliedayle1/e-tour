@@ -41,7 +41,7 @@ class AuthenticatedSessionController extends Controller
                 } else if(auth()->user()->subscription->name == 'plus'){
                     $package_counter = 10;
                 } else {
-                    $package_counter = 30;
+                    $package_counter = 15;
                 }
 
                 auth()->user()->subsperk->update([

@@ -18,6 +18,7 @@ class ReportsController extends Controller
         $pdf = Pdf::loadView('reports.itinerary', $data);
 
         return $pdf->download($itinerary->name .'.pdf');
+        // return $pdf->stream();
 
     }
 

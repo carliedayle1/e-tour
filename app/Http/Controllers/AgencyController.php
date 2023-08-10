@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Redirect;
 use App\Notifications\NewUserNotification;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Validation\Rules\File;
+
 
 class AgencyController extends Controller
 {
@@ -25,11 +27,12 @@ class AgencyController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'agency' => ['required', 'string', 'max:255', 'min:3'],
+            'certificate' => ['required', 'mimes:pdf,jpg,jpeg,png'],
             'description' => ['required', 'string', 'max:255', 'min:6'],
         ]);
 
@@ -40,9 +43,13 @@ class AgencyController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        if(request()->file('certificate') !== null) {
+            $validated['certificate'] = request()->file('certificate')->store('business-certificate', 'public');
+        }
         Agency::create([
             'user_id' => $user->id,
             'name' => $request->agency,
+            'certificate' => $validated['certificate'],
             'description' => $request->description,
         ]);
 
@@ -61,10 +68,15 @@ class AgencyController extends Controller
     {
         $request->user()->fill($request->validated());
         
-        $request->validate([
+        $validated = $request->validate([
             'agency' => ['required', 'string', 'max:255', 'min:3'],
             'description' => ['required', 'string', 'max:255', 'min:6'],
+            'certificate' => ['nullable', 'mimes:pdf,jpg,jpeg,png'],
         ]);
+
+        if(request()->file('certificate') !== null) {
+            $validated['certificate'] = request()->file('certificate')->store('business-certificate', 'public');
+        }
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
@@ -73,7 +85,8 @@ class AgencyController extends Controller
         $request->user()->save();
         $request->user()->agency->update([
             'name' => $request->agency,
-            'description' => $request->description
+            'description' => $request->description,
+            'certificate' => $validated['certificate'] !== null ? $validated['certificate'] : $request->user()->agency->certificate
         ]);
 
         toast('Agency information updated successfully','info');

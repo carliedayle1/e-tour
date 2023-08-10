@@ -31,6 +31,11 @@
             <x-input-label for="description" :value="__('About Us')" />
             <x-textarea-input id="description" class="block mt-1 w-full" name="description" :value="old('description', $user?->agency?->description)" required autofocus autocomplete="description" readonly />
         </div>
+
+        <div>
+            <x-input-label for="description" :value="__('Certificate of Business')" />
+            <iframe src="{{ asset('/storage/'. $user?->agency?->certificate) }}" frameborder="0" width="100%" class="w-full h-60"></iframe>
+        </div>
        
 
         <div>

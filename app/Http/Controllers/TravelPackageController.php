@@ -422,11 +422,15 @@ class TravelPackageController extends Controller
             'slots' => intval($booking->timeslot->slots) - 1
         ]);
 
+        $booking->update([
+            'status' => 'CANCELLED'
+        ]);
+
         //Notify agency
         $agency = User::where('id', $booking->agency->user->id)->get();
         Notification::send($agency, new CancelBooking($booking));
 
-        $booking->delete();
+        // $booking->delete();
         toast('Booking canceled!','warning');
         return to_route('travel.plan');
     }

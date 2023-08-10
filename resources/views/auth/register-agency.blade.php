@@ -1,7 +1,7 @@
 
 <x-guest-layout>
     <span class="text-gray-700 dark:text-gray-300 text-lg text-center block my-2">Register as Travel Agency</span>
-    <form method="POST" action="{{ route('agency.store') }}">
+    <form method="POST" action="{{ route('agency.store') }}" enctype="multipart/form-data">
         @csrf
      
         <!-- Name -->
@@ -15,6 +15,14 @@
             <x-input-label for="agency" :value="__('Agency Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="agency" :value="old('agency')" required autofocus autocomplete="agency" />
             <x-input-error :messages="$errors->get('agency')" class="mt-2" />
+        </div>
+
+        <!-- Certificate of Business -->
+        <div class="mt-4">
+            <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="file_input">Upload Business Certificate</label>
+            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" id="file_input" type="file" name="certificate">
+            
+            <x-input-error :messages="$errors->get('certificate')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

@@ -14,7 +14,12 @@
     </div>
     <div class="text-center">
         <h1 class="text-3xl font-bold">{{ $itinerary->name }}</h1>
-        <p class="mt-6 text-md">{{ $itinerary->description }}</p>
+        <p class="mt-4 text-lg">{{ $itinerary->description }}</p>
+    </div>
+
+    <div class="flex mt-6">
+        <h3 class="text-xl font-bold">Created by: {{ $itinerary->user->name }}</h3>
+        <h4 class="text-lg font-bold">Email: {{ $itinerary->user->email }}</h4>
     </div>
 
     <div class="flex flex-col justify-center items-center">
